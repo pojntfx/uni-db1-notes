@@ -86,7 +86,7 @@ begin
 end;
 ```
 
-Use `select ... into` to fetch data into variables:
+Use `select ... into` to fetch data into variables; `%TYPE` infers the type of a column:
 
 ```sql
 declare
@@ -196,7 +196,7 @@ begin
 end;
 ```
 
-The equivalent of the `while` loop is the `loop`. `exit` prevents an infinite loop:
+The equivalent of the `while` loop is the `loop`. `exit`/`continue` prevents an infinite loop:
 
 ```sql
 declare
@@ -223,5 +223,31 @@ begin
     for i in 0..100 loop
         dbms_output.put_line(i);
     end loop;
+end;
+```
+
+While loops work as you'd expect; but also require the `loop` keyword:
+
+```sql
+declare
+    i number := 0;
+begin
+    while i <= 100 loop
+        dbms_output.put_line(i);
+
+        i := i + 1;
+    end loop;
+end;
+```
+
+You can also use `%ROWTYPE` to infer the type of a row and select an entire row at once:
+
+```sql
+declare
+    customer customers%ROWTYPE;
+begin
+    select * into customer from customers where customer_id = 100;
+
+    dbms_output.put_line(customer.name || '/' || customer.website);
 end;
 ```
