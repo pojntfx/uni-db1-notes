@@ -152,3 +152,46 @@ begin
     end if;
 end;
 ```
+
+You may use the `case` keyword for switch cases:
+
+```sql
+declare
+    grade char(1);
+    message varchar2(255);
+begin
+    grade := 'A';
+
+    case grade
+        when 'A' then
+            message := 'Excellent';
+        when 'B' then
+            message := 'Great';
+        when 'C' then
+            message := 'Good';
+        when 'D' then
+            message := 'Fair';
+        when 'F' then
+            message := 'Poor';
+        else
+            raise case_not_found;
+    end case;
+
+    dbms_output.put_line(message);
+end;
+```
+
+A `label`/`goto` equivalent is also available:
+
+```sql
+begin
+    goto do_work;
+    goto goodbye;
+
+    <<do_work>>
+    dbms_output.put_line('mawahaha');
+
+    <<goodbye>>
+    dbms_output.put_line('Goodbye!');
+end;
+```
