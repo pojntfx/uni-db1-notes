@@ -1,5 +1,9 @@
 # DB1 Notes
 
+> Unfortunately the pain never goes away.
+
+Also see [Vanilla SQL](./vanilla-sql.pdf) for quirks and more even weirdness in Oracle.
+
 ## PL/SQL
 
 Block structure:
