@@ -74,7 +74,7 @@ begin
 end;
 ```
 
-You can use `default` as an alternative to the `:=` operator when assigning variables in the declaration section.
+You can use `default` as an alternative to the `:=` operator when assigning variables in the declaration section. DO NOT use `=` when assignment, even re-assignment also uses `:=`.
 
 If a variable is defined as not null, it can't take a string of length 0:
 
@@ -112,5 +112,43 @@ declare
     price constant number := 10;
 begin
     price := 20; -- Will throw an exception
+end;
+```
+
+`if ... then ... end if` can be used for branching:
+
+```sql
+declare
+    sales number := 20000;
+begin
+    if sales > 10000 then
+        dbms_output.put_line('Lots of sales!');
+    end if;
+end;
+```
+
+Inline expressions are also supported:
+
+```sql
+large_sales := sales > 10000
+```
+
+Booleans need not be compared with `my_bool = true`, a simple `if my_bool then` is fine.
+
+`elseif ... then` is NOT valid syntax; `elsif ... then` is valid syntax.
+
+Statements may also be nested:
+
+```sql
+declare
+    sales number := 20000;
+begin
+    if sales > 10000 then
+        if sales > 15000 then
+            dbms_output.put_line('A new sales record!');
+        else
+            dbms_output.put_line('Lots of sales!');
+        end if;
+    end if;
 end;
 ```
