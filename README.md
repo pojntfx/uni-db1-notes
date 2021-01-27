@@ -102,3 +102,15 @@ begin
     dbms_output.put_line(customer_name || ': ' || customer_credit_limit);
 end;
 ```
+
+You can use `--` for single line comments and `/*` for multi line comments.
+
+Constants are created with the `constant` keyword and forbid reassignment:
+
+```sql
+declare
+    price constant number := 10;
+begin
+    price := 20; -- Will throw an exception
+end;
+```
