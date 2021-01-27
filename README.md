@@ -195,3 +195,33 @@ begin
     dbms_output.put_line('Goodbye!');
 end;
 ```
+
+The equivalent of the `while` loop is the `loop`. `exit` prevents an infinite loop:
+
+```sql
+declare
+    i number := 0;
+begin
+    loop
+        i := i + 1;
+
+        dbms_output.put_line('Iterator: ' || i);
+
+        if i >= 10 then
+            exit;
+        end if;
+    end loop;
+
+    dbms_output.put_line('Done!');
+end;
+```
+
+For loops can be done using the `for i in 0..100 loop ... end loop` syntax:
+
+```sql
+begin
+    for i in 0..100 loop
+        dbms_output.put_line(i);
+    end loop;
+end;
+```
