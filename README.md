@@ -37,7 +37,7 @@ begin
 end;
 ```
 
-The `exception` block is used to handle exceptions, for example `zero_divide` for divisions by zero:
+The `exception` block is used to handle exceptions, for example `zero_divide` for divisions by zero (`when others then` handles unexpected other exceptions):
 
 ```sql
 declare
@@ -48,6 +48,8 @@ begin
     exception
         when zero_divide then
             dbms_output.put_line(sqlerrm);
+        when others then
+            dbms_output.put_line('An unexpected error occured: ' || sqlerrm);
 end;
 ```
 
@@ -251,3 +253,44 @@ begin
     dbms_output.put_line(customer.name || '/' || customer.website);
 end;
 ```
+
+It is also possible to use OOP-style object/row creation thanks to `%ROWTYPE`:
+
+```sql
+declare
+    person persons%ROWTYPE;
+
+begin
+    person.person_id := 1;
+    person.first_name := 'John';
+    person.last_name := 'Doe';
+
+    insert into persons values person;
+end;
+```
+
+You can create custom exceptions:
+
+```sql
+declare
+    e_credit_too_high exception;
+    pragma exception_init(e_credit_too_high, -20001);
+begin
+    if 10000 > 1000 then
+        raise e_credit_too_high;
+    end if;
+end;
+```
+
+If you want to raise a custom exception, use `raise_application_error`:
+
+```sql
+declare
+    e_credit_too_high exception;
+    pragma exception_init(e_credit_too_high, -20001);
+begin
+    raise_application_error(-20001, 'Credit is to high!');
+end;
+```
+
+Using `sqlcode` and `sqlerrm` you can the last exception's code/error message.
