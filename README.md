@@ -694,3 +694,33 @@ begin
     end loop;
 end;
 ```
+
+Using `varray`, it is also possible to create arrays:
+
+```sql
+declare
+    type names_type is varray(255) of varchar2(20) not null;
+
+    names names_type := names_type('Albert', 'Jonathan', 'Judy');
+begin
+    dbms_output.put_line('Length before append: ' || names.count);
+
+    names.extend;
+
+    names(names.last) := 'Alice';
+
+    dbms_output.put_line('Length after append: ' || names.count);
+
+    names.trim;
+
+    dbms_output.put_line('Length after trim: ' || names.count);
+
+    names.trim(2);
+
+    dbms_output.put_line('Length after second trim: ' || names.count);
+
+    names.delete;
+
+    dbms_output.put_line('Length after delete: ' || names.count);
+end;
+```
