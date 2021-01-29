@@ -464,7 +464,7 @@ And remove it with `drop function`:
 drop function get_total_sales_for_year;
 ```
 
-Packages can be used to group functions and variables:
+Packages can be used to group function "interfaces" and variables:
 
 ```sql
 create or replace package order_management
@@ -475,4 +475,52 @@ as
 
     function get_total_transactions return number;
 end order_management;
+```
+
+You can now access the variables in the package with `.`:
+
+```sql
+begin
+    dbms_output.put_line(order_management.shipped_status);
+end;
+```
+
+In order to use functions in a package, you then have to create a package body, implementing it:
+
+```sql
+create or replace package body order_management
+as
+    function get_total_transactions return number
+    is
+        total_transactions number;
+    begin
+        select sum(unit_price) into total_transactions from orders inner join order_items using(order_id);
+
+        return total_transactions;
+    end;
+end;
+```
+
+You can now access the functions in the package with `.`:
+
+```sql
+select
+    order_management.get_total_transactions() as total_transactions
+from
+    dual;
+```
+
+And the same is possible from PL/SQL:
+
+```sql
+begin
+    dbms_output.put_line(order_management.get_total_transactions());
+end;
+```
+
+You can drop a package with `drop package` and a package body with `drop package body`:
+
+```sql
+drop package body order_management;
+drop package order_management;
 ```
