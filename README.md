@@ -570,7 +570,7 @@ end;
 Thanks to `before update of ... on ...`, it is also possible to do more complex checks before inserting:
 
 ```sql
-create or replace trigger customers_credit
+create or replace trigger customers_credit_trigger
     before update of credit_limit
     on customers
 declare
@@ -581,5 +581,57 @@ begin
     if current_day between 28 and 31 then
         raise_application_error(-20100, 'Locked at the end of the month');
     end if;
+end;
+```
+
+In combination with `when`, `new` (not available in `delete` statements) and `old` (not available in `insert` statements), it is also possible to check based on the previous & current values:
+
+```sql
+create or replace trigger customers_credit_limit_trigger
+    before update of credit_limit
+    on customers
+    for each row
+    when (new.credit_limit > 0)
+begin
+    if :new.credit_limit >= 2*:old.credit_limit then
+        raise_application_error(-20101, 'The new credit cannot be more than double the old credit!');
+    end if;
+end;
+```
+
+Using `instead of` triggers and `returning ... into ...`, you can also use views to safely insert into multiple tables:
+
+```sql
+create or replace trigger create_customer_trigger
+    instead of insert on customers_and_contacts
+    for each row
+declare
+    current_customer_id number;
+begin
+    insert into customers(
+        name,
+        address,
+        website,
+        credit_limit
+    ) values (
+        :new.name,
+        :new.address,
+        :new.website,
+        :new.credit_limit
+    ) returning customer_id into current_customer_id;
+
+    insert into contacts(
+        first_name,
+        last_name,
+        email,
+        phone,
+        customer_id
+    ) values (
+        :new.first_name,
+        :new.last_name,
+        :new.email,
+        :new.phone,
+        current_customer_id
+    );
 end;
 ```
