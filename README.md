@@ -2,7 +2,7 @@
 
 > Unfortunately the pain never goes away.
 
-Also see [Vanilla SQL](./vanilla-sql.pdf) for quirks and more even weirdness in Oracle.
+Also see [Vanilla SQL](./vanilla-sql.pdf) for quirks and even more weirdness in Oracle. Use a libre database, please. Free software, free society!
 
 ## PL/SQL
 
@@ -293,4 +293,69 @@ begin
 end;
 ```
 
-Using `sqlcode` and `sqlerrm` you can the last exception's code/error message.
+Using `sqlcode` and `sqlerrm` you can get the last exception's code/error message.
+
+Using cursors, you can procedurally process data:
+
+```sql
+declare
+    cursor sales_cursor is select * from sales;
+    sales_record sales_cursor%ROWTYPE;
+begin
+    update customers set credit_limit = 0;
+
+    open sales_cursor;
+
+    loop
+        fetch sales_cursor into sales_record;
+        exit when sales_cursor%NOTFOUND;
+
+        update
+            customers
+        set
+            credit_limit = extract(year from sysdate)
+        where
+            customer_id = sales_record.customer_id;
+    end loop;
+
+    close sales_cursor;
+end;
+```
+
+Complex exit logic can be avoided using the `for ... loop`:
+
+```sql
+declare
+    cursor product_cursor is select * from products;
+begin
+    for product_record in product_cursor loop
+        dbms_output.put_line(product_record.product_name || ': $' || product_record.list_price);
+    end loop;
+end;
+```
+
+Cursors can also have parameters:
+
+```sql
+declare
+    product_record products%rowtype;
+    cursor
+        product_cursor (
+            low_price number := 0,
+            high_price number := 100
+        )
+    is
+        select * from products where list_price between low_price and high_price;
+begin
+    open product_cursor(50, 100);
+
+    loop
+        fetch product_cursor into product_record;
+        exit when product_cursor%notfound;
+
+        dbms_output.put_line(product_record.product_name || ': $' || product_record.list_price);
+    end loop;
+
+    close product_cursor;
+end;
+```
