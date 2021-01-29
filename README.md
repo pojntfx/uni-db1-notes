@@ -635,3 +635,62 @@ begin
     );
 end;
 ```
+
+You can enable/disable a trigger with `alter trigger ... disable/enable`:
+
+```sql
+alter trigger create_customer_trigger disable;
+```
+
+And completely remove it with `drop trigger`:
+
+```sql
+drop trigger create_customer_trigger;
+```
+
+It is also possible to enable/disable all triggers of a table with `alter table ... enable/disable all triggers`:
+
+```sql
+alter table customers enable all triggers;
+```
+
+Maps are also possible in PL/SQL using `table of`:
+
+```sql
+declare
+    type country_capitals_type
+        is table of varchar2(100)
+        index by varchar2(50);
+
+    country_capitals country_capitals_type;
+begin
+    country_capitals('China') := '北京';
+    country_capitals('EU') := 'Brussels';
+    country_capitals('USA') := 'Washington';
+end;
+```
+
+You can use `mymap.first` and `mymap.next` to iterate:
+
+```sql
+declare
+    type country_capitals_type
+        is table of varchar2(100)
+        index by varchar2(50);
+
+    country_capitals country_capitals_type;
+    current_country varchar2(50);
+begin
+    country_capitals('China') := '北京';
+    country_capitals('EU') := 'Brussels';
+    country_capitals('USA') := 'Washington';
+
+    current_country := country_capitals.first;
+
+    while current_country is not null loop
+        dbms_output.put_line(current_country || ': ' || country_capitals(current_country));
+
+        current_country := country_capitals.next(current_country);
+    end loop;
+end;
+```
