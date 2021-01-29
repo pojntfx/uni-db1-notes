@@ -394,8 +394,72 @@ begin
 end;
 ```
 
+Or, without PL/SQL:
+
+```sql
+exec print_contact(50);
+```
+
 Once a procedure is no longer needed, it can be removed with `drop procedure`:
 
 ```sql
 drop procedure print_contact;
+```
+
+It is also possible to infer a row type using `sys_refcursor` and return rows with `dbms_sql.return_result`:
+
+```sql
+create or replace procedure
+    get_customer_by_credit(min_credit number)
+as
+    customer_cursor sys_refcursor;
+begin
+    open customer_cursor for select * from customers where credit_limit > min_credit;
+
+    dbms_sql.return_result(customer_cursor);
+end;
+```
+
+You can now call it:
+
+```sql
+exec get_customer_by_credit(50);
+```
+
+Functions are similar, but require returning a value:
+
+```sql
+create or replace function
+    get_total_sales_for_year(year_arg integer)
+return number
+is
+    total_sales number := 0;
+begin
+    select sum(unit_price * quantity) into total_sales
+    from order_items
+    inner join orders using (order_id)
+    where status = 'Shipped'
+    group by extract(year from order_date)
+    having extract(year from order_date) = year_arg;
+
+    return total_sales;
+end;
+```
+
+You can call them from PL/SQL:
+
+```sql
+declare
+    total_sales number := 0;
+begin
+    total_sales := get_total_sales_for_year(2017);
+
+    dbms_output.put_line('Sales for 2017: ' || total_sales);
+end;
+```
+
+And remove it with `drop function`:
+
+```sql
+drop function get_total_sales_for_year;
 ```
