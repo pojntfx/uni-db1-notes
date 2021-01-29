@@ -463,3 +463,16 @@ And remove it with `drop function`:
 ```sql
 drop function get_total_sales_for_year;
 ```
+
+Packages can be used to group functions and variables:
+
+```sql
+create or replace package order_management
+as
+    shipped_status constant varchar(10) := 'Shipped';
+    pending_status constant varchar(10) := 'Pending';
+    cancelled_status constant varchar(10) := 'Canceled';
+
+    function get_total_transactions return number;
+end order_management;
+```
