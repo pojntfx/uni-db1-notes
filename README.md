@@ -359,3 +359,43 @@ begin
     close product_cursor;
 end;
 ```
+
+The DB can also lock fields for safe multiple access:
+
+```sql
+declare
+    cursor customers_cursor is select * from customers for update of credit_limit;
+begin
+    for customer_record in customers_cursor loop
+        update customers set credit_limit = 0 where customer_id = customer_record.customer_id;
+    end loop;
+end;
+```
+
+You can create procedures, which are comparable to functions:
+
+```sql
+create or replace procedure
+    print_contact(customer_id_arg number)
+is
+    contact_record contacts%rowtype;
+begin
+    select * into contact_record from contacts where customer_id = customer_id_arg;
+
+    dbms_output.put_line(contact_record.first_name || ' ' || contact_record.last_name);
+end;
+```
+
+These procedures can then be executed:
+
+```sql
+begin
+    print_contact(50);
+end;
+```
+
+Once a procedure is no longer needed, it can be removed with `drop procedure`:
+
+```sql
+drop procedure print_contact;
+```
