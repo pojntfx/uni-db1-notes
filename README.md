@@ -8,13 +8,14 @@ Also see [Vanilla SQL](./vanilla-sql.pdf) for quirks and even more weirdness in 
 
 Block structure:
 
-```plaintext
-Declaration Section
+```sql
+declare
+-- declarations
 begin
-Execution Section
+-- your logic
 exception
-Exception Section
-end
+-- exception handling
+end;
 ```
 
 The most simple example is as follows:
@@ -523,4 +524,62 @@ You can drop a package with `drop package` and a package body with `drop package
 ```sql
 drop package body order_management;
 drop package order_management;
+```
+
+Triggers follow a similar structure as procedures:
+
+```sql
+declare
+-- declarations
+begin
+-- your logic
+exception
+-- exception handling
+end;
+```
+
+Using triggers, you can for example create a manual log after operations with `after update or delete on ...`:
+
+```sql
+create or replace trigger customers_audit_trigger
+    after update or delete
+    on customers
+    for each row
+declare
+    transaction_type varchar2(10);
+begin
+    transaction_type := case
+        when updating then 'update'
+        when deleting then 'delete'
+    end;
+
+    insert into audits(
+        table_name,
+        transaction_name,
+        by_user,
+        transaction_date
+    ) values (
+        'customers',
+        transaction_type,
+        user,
+        sysdate
+    );
+end;
+```
+
+Thanks to `before update of ... on ...`, it is also possible to do more complex checks before inserting:
+
+```sql
+create or replace trigger customers_credit
+    before update of credit_limit
+    on customers
+declare
+    current_day number;
+begin
+    current_day := extract(day from sysdate);
+
+    if current_day between 28 and 31 then
+        raise_application_error(-20100, 'Locked at the end of the month');
+    end if;
+end;
 ```
