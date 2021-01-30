@@ -198,6 +198,101 @@ You can count the amount of rows with the `count()` function:
 select count(*) from products
 ```
 
+The group by keyword can be used to find unique data:
+
+```sql
+select status from orders group by status;
+```
+
+By combining group by with count you can count the amount of unique data:
+
+```sql
+select status, count (*) from orders group by status;
+```
+
+`group by` can also be used with the where keyword:
+
+```sql
+select name, count(*) as "Shipped Orders" from orders inner join customers using(customer_id) where status = 'Shipped' group by name order by "Shipped Orders" desc;
+```
+
+`where` can NOT APPEAR AFTER `group by`; use the having keyword instead.
+
+The having keyword enables you to filter like with where, but after the group by keyword like so:
+
+```sql
+select status from orders where extract(year from order_date) > '2016' group by status having status like '%d';
+```
+
+The sum function can be used to calculate a total:
+
+```sql
+select sum(unit_price * quantity) from order_items;
+```
+
+It can also be used to calculate a total per row (the group by order_id part is required; group by order_value
+does not work):
+
+```sql
+select order_id, sum(unit_price * quantity) as order_value from order_items group by order_id;
+```
+
+What is the difference between join and union? join merges horizontally (there are more columns than before, maybe also more rows), union merges vertically (there are more rows than before, but the column count stays the same).
+
+`union` is similar to `T1 | T2` in TypeScript; you can use order by and union to remove duplices, but note that we have to use select two times:
+
+```sql
+select first_name, last_name, email, 'contact' as role from contacts union select first_name, last_name, email, 'employee' as role from employees order by role
+```
+
+`union all` is similar to T1 & T2 in TypeScript; it keeps duplicates:
+
+```sql
+select last_name from contacts union all select last_name from employees;
+```
+
+Wish to find the difference between two tables? Use `intersect`:
+
+```sql
+select last_name from contacts intersect select last_name from employees;
+```
+
+Wish to subtract one table from another table? Use `minus`:
+
+```sql
+select last_name from contacts minus select last_name from employees;
+```
+
+It is a good idea to always specify the columns when inserting:
+
+```sql
+insert into discounts(discount_name, amount, start_date, expired_date) values ('Summer Promotion', 9.5, date '2017-05-01', date '2017-08-31')
+```
+
+Want to get the current date? Use current_date:
+
+```sql
+select current_date from dual;
+```
+
+You can also “insert from select” using `insert into`:
+
+```sql
+insert into sales(customer_id, product_id, order_date, total) select customer_id, product_id, order_date, sum(quantity * unit_price) amount from orders inner join order_items using(order_id) where status = 'Shipped' group by customer_id, product_id, order_date;
+```
+
+It’s even possible to “create a table from select” using `create table x as`, basically coping its schema (`where 1 = 0 skips` copying the rows):
+
+```sql
+create table sales_2017 as select * from sales where 1 = 0;
+```
+
+Using insert all, it is possible to insert multiple rows at once (note the lack of commas between the into keywords. Here, the subquery is ignored/a placeholder.):
+
+```sql
+insert all into fruits (fruit_name, color) values ('Apple', 'Red') into fruits (fruit_name, color) values ('Orange', 'Orange') into fruits (fruit_name, color) values ('Banana', 'Yellow') select 1 from dual
+```
+
 ## PL/SQL
 
 Block structure:
