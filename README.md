@@ -61,6 +61,143 @@ It also supports full expression evaluation:
 select product_name as "Product Name", list_price - standard_cost as "Gross Profit" from products order by "Gross Profit"
 ```
 
+You can also create a table alias (from employees e), but you CAN’T USE the as keyword.
+
+The Oracle equivalent of filter is `fetch n next rows only`: `select * from products order by list_price desc fetch next 5 rows only;`.
+
+Filtering by for example a quantity, and you only want the first 10 “condition matches”? Use fext n next rows with ties:
+
+```sql
+select * from inventories order by quantity desc fetch next 5 rows with ties;
+```
+
+You may also use the `fetch next n percent rows only`:
+
+```sql
+select * from inventories order by quantity desc fetch next 10 percent rows only;
+```
+
+Pagination? Use offset:
+
+```sql
+select * from products order by standard_cost desc offset 10 rows fetch next 10 rows only;.
+```
+
+Comparisons are done with `=`, NOT `==`.
+
+Want to extract a year from a date? Use extract:
+
+```sql
+select * from orders where status = 'Shipped' and extract(year from order_date) = 2017 order by order_date desc fetch next 1 rows with ties;
+```
+
+You can use `()` in `where` clauses to prioritize:
+
+```sql
+select * from orders where (
+status = 'Canceled' or status = 'Pending' ) and customer_id = 44
+order by order_date;
+```
+
+The `in` keyword is a useful tool for sub collections and subqueries:
+
+- `select * from orders where salesman_id in (54, 55, 56) order by order_id;`
+- `select * from orders where salesman_id not in (54, 55, 56) order by order_id; (you can use not)`
+- `select * from employees where employee_id in ( select distinct salesman_id from orders where status = 'Canceled' ) order by first_name;` (you can of course also use not)
+
+Between can also be used for dates:
+
+```sql
+select * from orders where order_date between date '2016-12-01' and date '2016-12-31'
+```
+
+Some examples of `like` (you can use not for all of them):
+
+- `select * from contacts where last_name like 'St%'`
+- `select * from contacts where last_name like '%St'`
+- `select * from contacts where last_name like '%St%'`
+- `select * from contacts where last_name like 'Po_tinger'` (`_` matches any one character)
+- `select * from contacts where lower(last_name) like 'st%'`
+- `select * from contacts where upper(last_name) like 'st%'`
+- `select * from discounts where discount_message like '%%%'` (returns everything)
+- `select * from discounts where discount_message like '%%%' escape '!'` (returns everything that includes the string ‘%’)
+
+You can compare against null with `is null` (`= NULL` does not work). You can negate with not.
+
+An inner join matches stuff in both tables:
+
+```sql
+select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a inner join palette_b b on a.color = b.color;
+```
+
+A left (outer) join matches everything in the left tables plus what matches in the right table:
+
+```sql
+select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a left join palette_b b on a.color = b.color
+```
+
+This left (outer) join matches everything that is in the left table and not in the right table:
+
+```sql
+select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a left join palette_b b on a.color = b.color where b.id is null
+```
+
+A right (outer) join matches everything in the right join plus what matches in the left table:
+
+```sql
+select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a right join palette_b b on a.color = b.color;
+```
+
+This right (outer) join matches everything that is in the right table and not in the left table:
+
+```sql
+select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a right join palette_b b on a.color = b.color where a.id is null;
+```
+
+A full (outer) join merges both tables:
+
+```sql
+select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a full join palette_b b on a.color = b.color;
+```
+
+This full (outer) join merges both tables and removes those rows which are in both:
+
+```sql
+select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a full join palette_b b on a.color = b.color where a.id is null or b.id is null;
+```
+
+In addition to the on keyword you can also use the using keyword if the PK and FK are the same:
+
+```sql
+select * from orders inner join order_items using(order_id)
+```
+
+You can also use multiple on or using statements:
+
+```sql
+select * from orders inner join order_items using(order_id) inner join customers using(customer_id)
+```
+
+If you use the on keyword, use `and` for multiples!
+
+You can also create the Cartesian product:
+
+```sql
+select * from products cross join warehouse;
+```
+
+It is also possible to do a self join:
+
+```sql
+select (w.first_name || ' ' || w.last_name) "Worker", (m.first_name || ' ' || m.last_name) "Manager", w.job_title from employees w left join employees m on w.employee_id = m.manager_id
+```
+
+You can count the amount of rows with the `count()` function:
+
+```sql
+select count(*) from products
+```
+
 ## PL/SQL
 
 Block structure:
