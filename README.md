@@ -433,6 +433,132 @@ You can clear a table using `truncate table`:
 truncate table customers_copy;
 ```
 
+The same limitations as with drop table concerning constraints apply, so appending cascade (WITHOUT constraints) drops all related ones.
+
+You can create a number within a range: `number(1,0)`.
+
+It is possible to add constraints (any constraints, a primary key in this example) after creating a table with add constraint:
+
+```sql
+alter table purchase_orders add constraint purchase_orders_order_id_pk primary key(order_id);
+```
+
+You may remove a constraint with `drop constraint`:
+
+```sql
+alter table purchase_orders drop constraint purchase_orders_order_id_pk;
+```
+
+Instead of removing it, you can also use `disable constraint`:
+
+```sql
+alter table purchase_orders disable constraint purchase_orders_order_id_pk;
+```
+
+And re-enable it with `enable constraint`:
+
+```sql
+alter table purchase_orders enable constraint purchase_orders_order_id_pk;
+```
+
+You can also add foreign key constraints:
+
+```sql
+alter table suppliers add constraint suppliers_supplier_groups_fk foreign key(group_id) references supplier_groups(group_id);
+```
+
+Using a check constraint, arbitrary expressions can be evaluated:
+
+```sql
+alter table parts add constraint check_buy_price_positive check(buy_price > 0);
+```
+
+A unique constraint prevents unwanted duplicates:
+
+```sql
+alter table clients add constraint unique_clients_phone unique(phone);
+```
+
+With a not null constraint, fuzzy logic can be avoided; it is however best to define nullable fields at schema creation, as the syntax differs from the add constraint/drop constraint logic above:
+
+```sql
+alter table clients modify ( 7 phone not null );
+```
+
+You can remove them by modifying it to null explicitly:
+
+```sql
+alter table clients modify ( phone null );
+```
+
+The `number` type is used for all types of numbers by specifying precision and scale: `number(6)` (or `number(6,0)`) is a signed integer fitting 6 digits, `number(6,2)` is a float with two digits precision. The DB doesn’t just cut of numbers, it rounds them.
+
+The float type can be emulated by the number type, i.e. `float(2)` is equal to `number(38,2)`. The argument is in bits instead of digits though.
+
+The `lengthdb` function can be used to get the length of field in bytes.
+
+The char type has a fixed length: name `char(10)` or name `char(10 bytes)`, meaning that a char always takes up the amount of bytes set. `nchar` is the same but UTF-8 or UTF-16 any doesn’t take bytes.
+
+The `varchar2` type also takes an argument for the length in bytes, which in ASCII corresponds to the amount of characters. `nvarchar2` is the same but UTF-8 or UTF-16 and doesn’t take bytes.
+
+The `to_char` function can convert dates (and timestamps) to chars:
+
+```sql
+select to_char(sysdate, 'YYYY-MM-DD') from dual;
+```
+
+The `to_date` function can convert chars to dates:
+
+```sql
+select to_date('2021-01-12', 'YYYY-MM-DD') from dual;
+```
+
+Alternatively, the date literal uses the YYYY-MM-DD format and does not require format specs:
+
+```sql
+select date '1969-04-20' from dual;
+```
+
+You can get the current date with `sysdate`:
+
+```sql
+select localtimestamp from dual;
+```
+
+You can get the current datetime with `localtimestamp`:
+
+```sql
+select localtimestamp from dual;
+```
+
+The current time zone is available with `sessiontimezone`:
+
+```sql
+select sessiontimezone from dual (yields Europe/Berlin);
+```
+
+The `timestamp` literal uses the `YYYY-MM-DD HH24:MI:SS.FF` format:
+
+```sql
+select timestamp '1969-04-20 00:00:00.00' from dual;
+```
+
+You may also append the timezone (But keep in mind that timestamp with time zone is the column type in this case):
+
+```sql
+select timestamp '1969-04-20 00:00:00.00 Europe/Berlin' from dual;
+```
+
+The `interval` literal can be used to create intervals:
+
+```sql
+select interval '9' day from dual, select interval '9' month from dual, select interval '9-2' year to month from dual or select interval '09:08:6.75' hour to second(2) from dual;
+```
+
+You can use the `floor`, `round` and `ceil` functions to get rounded values.
+
+Using the `months_between` function, the count of months between two dates can be computed.
+
 ## PL/SQL
 
 Block structure:
