@@ -4,6 +4,63 @@
 
 Also see [Vanilla SQL](./vanilla-sql.pdf) for quirks and even more weirdness in Oracle. Use a libre database, please. Free software, free society!
 
+## Source Tutorial
+
+Most of this is based on the [Oracle Tutorial](https://www.oracletutorial.com/oracle-basics/).
+
+## Clean Start
+
+```sql
+select 'drop table ', table_name, 'cascade constraints;' from user_tables;
+```
+
+Now paste the output into SQL Developer.
+
+## Operators
+
+| Operator              | Description                                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------------ |
+| =                     | Equality                                                                                         |
+| !=,<>                 | Inequality                                                                                       |
+| >                     | Greater than                                                                                     |
+| <                     | Less than                                                                                        |
+| >=                    | Greater than or equal to                                                                         |
+| <=                    | Less than or equal to                                                                            |
+| IN                    | Equal to any value in a list of values                                                           |
+| ANY/ SOME/ ALL        | Compare a value to a list or subquery. It must be preceded by another operator such as =, >, <.j |
+| NOT IN                | Not equal to any value in a list of values                                                       |
+| [NOT] BETWEEN n and m | Equivalent to [Not] >= n and <= y.                                                               |
+| [NOT] EXISTS          | Return true if subquery returns at least one row                                                 |
+| IS [NOT] NULL         | NULL test                                                                                        |
+
+## Vanilla SQL Quirks
+
+Only single quotes are supported.
+
+Stuff like select upper('uwu') from dual can come in handy.
+
+Multiple order by statements? First ordered by first statement, then “sub-ordered” by the second (last name the same -> now first name is evaluated).
+
+Want to have nulls first when ordering? Use nulls first or nulls last as the suffix.
+
+You can use functions like upper and dates when ordering.
+
+Removal of duplicates is done with select distinct. When multiple columns are being selected, use only one distinct keyword at the start. Multiple nulls are filtered (Null = Null).
+
+`... like '%Asus%'` (note the \'s) is basically a full-text search.
+
+You can alias long column names with select mylongname as name from contacts or just select mylongname name from contacts. The `as` keyword is optional. Full-text column names are supported by enclosing in "". as can also format strings: `select first_name || ' ' || last_name as "Name" from employees;` yields:
+
+- Alice
+- Bob
+- System
+
+It also supports full expression evaluation:
+
+```sql
+select product_name as "Product Name", list_price - standard_cost as "Gross Profit" from products order by "Gross Profit"
+```
+
 ## PL/SQL
 
 Block structure:
