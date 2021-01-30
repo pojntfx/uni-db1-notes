@@ -1,8 +1,10 @@
 # DB1 Notes
 
+Some notes for the DB1 course at HdM Stuttgart, which really is an introduction to the proprietary Oracle database.
+
 > Unfortunately the pain never goes away.
 
-Also see [Vanilla SQL](./vanilla-sql.pdf) for quirks and even more weirdness in Oracle. Use a libre database, please. Free software, free society!
+**Use a libre database, not Oracle, please. Free software, free society!**
 
 ## Source Tutorial
 
@@ -558,6 +560,36 @@ select interval '9' day from dual, select interval '9' month from dual, select i
 You can use the `floor`, `round` and `ceil` functions to get rounded values.
 
 Using the `months_between` function, the count of months between two dates can be computed.
+
+You can create a view with `create view x as select ...`:
+
+```sql
+create view employees_years_of_service as select employee_id, first_name || ' ' || last_name as full_name, floor(months_between(current_date, hire_date) / 12) as years_of_service from employees;
+```
+
+If used with `create or replace view`, upserts are possible.
+
+By appending `with read only`, you can prevent data modifications:
+
+```sql
+create or replace view employees_years_of_service as select employee_id, first_name || ' ' || last_name as full_name, floor(months_between(current_date, hire_date) / 12) as years_of_service from employees with read only;
+```
+
+`drop view x` removes the view.
+
+Deletions and updates on views are usually fine, but inserts can often be not that useful due to fields being excluded from the view; see `instead of` triggers later on for a solution;
+
+Subqueries can be used in selects:
+
+```sql
+select * from ( select * from products) where list_price < 100;
+```
+
+They can also be used in updates:
+
+```sql
+update ( select list_price from products ) set list_price = list_price * 1.5;
+```
 
 ## PL/SQL
 
