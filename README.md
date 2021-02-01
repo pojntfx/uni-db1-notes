@@ -1,22 +1,22 @@
 # DB1 Notes
 
-Some notes for the DB1 course at HdM Stuttgart, which really is an introduction to the proprietary Oracle database.
+My personal notes for the DB1 course at HdM Stuttgart. DB1 is an introduction to SQL and PL/SQL using the proprietary Oracle database.
 
-> Unfortunately the pain never goes away.
+If you intend on learning how to work with databases, please refrain from using the proprietary Oracle database. Choose a superior alternative, such as PostgreSQL or MariaDB instead. Free Software, Free Society!
 
-**Use a libre database, not Oracle, please. Free software, free society!**
+## Acknowledgements
 
-## Source Tutorial
+Most of the following is based on the [Oracle Tutorial](https://www.oracletutorial.com/oracle-basics/).
 
-Most of this is based on the [Oracle Tutorial](https://www.oracletutorial.com/oracle-basics/).
+## Starting Fresh
 
-## Clean Start
+Run the following to get the commands to drop all tables and their constraints:
 
 ```sql
 select 'drop table ', table_name, 'cascade constraints;' from user_tables;
 ```
 
-Now paste the output into SQL Developer.
+Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</kbd>.
 
 ## Operators
 
