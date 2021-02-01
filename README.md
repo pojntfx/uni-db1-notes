@@ -8,7 +8,7 @@ If you intend on learning how to work with databases, please refrain from using 
 
 Most of the following is based on the [Oracle Tutorial](https://www.oracletutorial.com/oracle-basics/).
 
-## Starting Fresh
+## Reset Everything
 
 Run the following to get the commands to drop all tables and their constraints:
 
@@ -18,7 +18,9 @@ select 'drop table ', table_name, 'cascade constraints;' from user_tables;
 
 Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</kbd>.
 
-## Operators
+## SQL
+
+### Operators
 
 | Operator              | Description                                                                                      |
 | --------------------- | ------------------------------------------------------------------------------------------------ |
@@ -35,164 +37,150 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
 | [NOT] EXISTS          | Return true if subquery returns at least one row                                                 |
 | IS [NOT] NULL         | NULL test                                                                                        |
 
-## Vanilla SQL Quirks
+### Joins
 
-Only single quotes are supported.
+- An inner join matches stuff in both tables:
 
-Stuff like select upper('uwu') from dual can come in handy.
+  ```sql
+  select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a inner join palette_b b on a.color = b.color;
+  ```
 
-Multiple order by statements? First ordered by first statement, then “sub-ordered” by the second (last name the same -> now first name is evaluated).
+- A left (outer) join matches everything in the left tables plus what matches in the right table:
 
-Want to have nulls first when ordering? Use nulls first or nulls last as the suffix.
+  ```sql
+  select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a left join palette_b b on a.color = b.color
+  ```
 
-You can use functions like upper and dates when ordering.
+- This left (outer) join matches everything that is in the left table and not in the right table:
 
-Removal of duplicates is done with select distinct. When multiple columns are being selected, use only one distinct keyword at the start. Multiple nulls are filtered (Null = Null).
+  ```sql
+  select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a left join palette_b b on a.color = b.color where b.id is null
+  ```
 
-`... like '%Asus%'` (note the \'s) is basically a full-text search.
+- A right (outer) join matches everything in the right join plus what matches in the left table:
 
-You can alias long column names with select mylongname as name from contacts or just select mylongname name from contacts. The `as` keyword is optional. Full-text column names are supported by enclosing in "". as can also format strings: `select first_name || ' ' || last_name as "Name" from employees;` yields:
+  ```sql
+  select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a right join palette_b b on a.color = b.color;
+  ```
 
-- Alice
-- Bob
-- System
+- This right (outer) join matches everything that is in the right table and not in the left table:
 
-It also supports full expression evaluation:
+  ```sql
+  select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a right join palette_b b on a.color = b.color where a.id is null;
+  ```
 
-```sql
-select product_name as "Product Name", list_price - standard_cost as "Gross Profit" from products order by "Gross Profit"
-```
+- A full (outer) join merges both tables:
 
-You can also create a table alias (from employees e), but you CAN’T USE the as keyword.
+  ```sql
+  select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a full join palette_b b on a.color = b.color;
+  ```
 
-The Oracle equivalent of filter is `fetch n next rows only`: `select * from products order by list_price desc fetch next 5 rows only;`.
+- This full (outer) join merges both tables and removes those rows which are in both:
 
-Filtering by for example a quantity, and you only want the first 10 “condition matches”? Use fext n next rows with ties:
+  ```sql
+  select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a full join palette_b b on a.color = b.color where a.id is null or b.id is null;
+  ```
 
-```sql
-select * from inventories order by quantity desc fetch next 5 rows with ties;
-```
+- In addition to the on keyword you can also use the using keyword if the PK and FK are the same:
 
-You may also use the `fetch next n percent rows only`:
+  ```sql
+  select * from orders inner join order_items using(order_id)
+  ```
 
-```sql
-select * from inventories order by quantity desc fetch next 10 percent rows only;
-```
+- You can also use multiple on or using statements:
 
-Pagination? Use offset:
+  ```sql
+  select * from orders inner join order_items using(order_id) inner join customers using(customer_id)
+  ```
 
-```sql
-select * from products order by standard_cost desc offset 10 rows fetch next 10 rows only;.
-```
+- If you use the on keyword, use `and` for multiples!
+- You can also create the Cartesian product:
 
-Comparisons are done with `=`, NOT `==`.
+  ```sql
+  select * from products cross join warehouse;
+  ```
 
-Want to extract a year from a date? Use extract:
+- It is also possible to do a self join:
 
-```sql
-select * from orders where status = 'Shipped' and extract(year from order_date) = 2017 order by order_date desc fetch next 1 rows with ties;
-```
+  ```sql
+  select (w.first_name || ' ' || w.last_name) "Worker", (m.first_name || ' ' || m.last_name) "Manager", w.job_title from employees w left join employees m on w.employee_id = m.manager_id
+  ```
 
-You can use `()` in `where` clauses to prioritize:
+### Other Quirks
 
-```sql
-select * from orders where (
-status = 'Canceled' or status = 'Pending' ) and customer_id = 44
-order by order_date;
-```
+- Only single quotes are supported.
+- Stuff like `select upper('uwu') from dual` can come in handy.
+- Multiple order by statements? First ordered by first statement, then “sub-ordered” by the second (last name the same -> now first name is evaluated).
+- Want to have nulls first when ordering? Use nulls first or nulls last as the suffix.
+- You can use functions like `upper` and dates when ordering.
+- Removal of duplicates is done with `select distinct`. When multiple columns are being selected, use only one distinct keyword at the start. Multiple nulls are filtered (Null = Null).
+- `... like '%Asus%'` (note the \'s) is basically a full-text search.
+- You can alias long column names with select mylongname as name from contacts or just select mylongname name from contacts. The `as` keyword is optional. Full-text column names are supported by enclosing in "". as can also format strings: `select first_name || ' ' || last_name as "Name" from employees;` yields Alice, Bob and System.
+- It also supports full expression evaluation:
 
-The `in` keyword is a useful tool for sub collections and subqueries:
+  ```sql
+  select product_name as "Product Name", list_price - standard_cost as "Gross Profit" from products order by "Gross Profit"
+  ```
 
-- `select * from orders where salesman_id in (54, 55, 56) order by order_id;`
-- `select * from orders where salesman_id not in (54, 55, 56) order by order_id; (you can use not)`
-- `select * from employees where employee_id in ( select distinct salesman_id from orders where status = 'Canceled' ) order by first_name;` (you can of course also use not)
+- You can also create a table alias (using `from employees e`), but you CAN’T USE the `as` keyword.
+- The Oracle equivalent of filter is `fetch n next rows only`: `select * from products order by list_price desc fetch next 5 rows only;`.
+- Filtering by for example a quantity, and you only want the first 10 “condition matches”? Use fext n next rows with ties:
 
-Between can also be used for dates:
+  ```sql
+  select * from inventories order by quantity desc fetch next 5 rows with ties;
+  ```
 
-```sql
-select * from orders where order_date between date '2016-12-01' and date '2016-12-31'
-```
+- You may also use the `fetch next n percent rows only`:
 
-Some examples of `like` (you can use not for all of them):
+  ```sql
+  select * from inventories order by quantity desc fetch next 10 percent rows only;
+  ```
 
-- `select * from contacts where last_name like 'St%'`
-- `select * from contacts where last_name like '%St'`
-- `select * from contacts where last_name like '%St%'`
-- `select * from contacts where last_name like 'Po_tinger'` (`_` matches any one character)
-- `select * from contacts where lower(last_name) like 'st%'`
-- `select * from contacts where upper(last_name) like 'st%'`
-- `select * from discounts where discount_message like '%%%'` (returns everything)
-- `select * from discounts where discount_message like '%%%' escape '!'` (returns everything that includes the string ‘%’)
+- Need Pagination? Use offset:
 
-You can compare against null with `is null` (`= NULL` does not work). You can negate with not.
+  ```sql
+  select * from products order by standard_cost desc offset 10 rows fetch next 10 rows only;.
+  ```
 
-An inner join matches stuff in both tables:
+- Comparisons are done with `=`, NOT `==`.
+- Want to extract a year from a date? Use extract:
 
-```sql
-select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a inner join palette_b b on a.color = b.color;
-```
+  ```sql
+  select * from orders where status = 'Shipped' and extract(year from order_date) = 2017 order by order_date desc fetch next 1 rows with ties;
+  ```
 
-A left (outer) join matches everything in the left tables plus what matches in the right table:
+- You can use `()` in `where` clauses to prioritize:
 
-```sql
-select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a left join palette_b b on a.color = b.color
-```
+  ```sql
+  select * from orders where (
+  status = 'Canceled' or status = 'Pending' ) and customer_id = 44
+  order by order_date;
+  ```
 
-This left (outer) join matches everything that is in the left table and not in the right table:
+- The `in` keyword is a useful tool for sub collections and subqueries:
 
-```sql
-select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a left join palette_b b on a.color = b.color where b.id is null
-```
+  - `select * from orders where salesman_id in (54, 55, 56) order by order_id;`
+  - `select * from orders where salesman_id not in (54, 55, 56) order by order_id; (you can use not)`
+  - `select * from employees where employee_id in ( select distinct salesman_id from orders where status = 'Canceled' ) order by first_name;` (you can of course also use not)
 
-A right (outer) join matches everything in the right join plus what matches in the left table:
+- Between can also be used for dates:
 
-```sql
-select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a right join palette_b b on a.color = b.color;
-```
+  ```sql
+  select * from orders where order_date between date '2016-12-01' and date '2016-12-31'
+  ```
 
-This right (outer) join matches everything that is in the right table and not in the left table:
+- Some examples of `like` (you can use not for all of them):
 
-```sql
-select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a right join palette_b b on a.color = b.color where a.id is null;
-```
+  - `select * from contacts where last_name like 'St%'`
+  - `select * from contacts where last_name like '%St'`
+  - `select * from contacts where last_name like '%St%'`
+  - `select * from contacts where last_name like 'Po_tinger'` (`_` matches any one character)
+  - `select * from contacts where lower(last_name) like 'st%'`
+  - `select * from contacts where upper(last_name) like 'st%'`
+  - `select * from discounts where discount_message like '%%%'` (returns everything)
+  - `select * from discounts where discount_message like '%%%' escape '!'` (returns everything that includes the string ‘%’)
 
-A full (outer) join merges both tables:
-
-```sql
-select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a full join palette_b b on a.color = b.color;
-```
-
-This full (outer) join merges both tables and removes those rows which are in both:
-
-```sql
-select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a full join palette_b b on a.color = b.color where a.id is null or b.id is null;
-```
-
-In addition to the on keyword you can also use the using keyword if the PK and FK are the same:
-
-```sql
-select * from orders inner join order_items using(order_id)
-```
-
-You can also use multiple on or using statements:
-
-```sql
-select * from orders inner join order_items using(order_id) inner join customers using(customer_id)
-```
-
-If you use the on keyword, use `and` for multiples!
-
-You can also create the Cartesian product:
-
-```sql
-select * from products cross join warehouse;
-```
-
-It is also possible to do a self join:
-
-```sql
-select (w.first_name || ' ' || w.last_name) "Worker", (m.first_name || ' ' || m.last_name) "Manager", w.job_title from employees w left join employees m on w.employee_id = m.manager_id
-```
+- You can compare against null with `is null` (`= NULL` does not work). You can negate with not.
 
 You can count the amount of rows with the `count()` function:
 
