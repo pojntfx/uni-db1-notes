@@ -2,7 +2,7 @@
 
 My personal notes for the DB1 course at HdM Stuttgart. DB1 is an introduction to SQL and PL/SQL using the proprietary Oracle database.
 
-If you intend on learning how to work with databases, please refrain from using the proprietary Oracle database. Choose a superior alternative, such as PostgreSQL or MariaDB instead. Free Software, Free Society!
+If you intend on learning how to work with databases, please refrain from using the proprietary Oracle database. Choose a superior alternative, such as PostgreSQL or MariaDB instead. [Free Software, Free Society](https://www.fsf.org/about/what-is-free-software)!
 
 ## Acknowledgements
 
@@ -563,6 +563,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
 
 ## PL/SQL
 
+### Block Structure
+
 - Block structure:
 
   ```sql
@@ -610,7 +612,6 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   end;
   ```
 
-- PL/SQL extends SQL by adding a boolean type (which can have the values true, false and null).
 - You always have to specify an execution section; use `null` for a no-op:
 
   ```sql
@@ -620,6 +621,11 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   end;
   ```
 
+- You can use `--` for single line comments and `/*` for multi line comments.
+
+### Variables
+
+- PL/SQL extends SQL by adding a boolean type (which can have the values true, false and null).
 - Variables need not be given a value at declaration if they are nullable:
 
   ```sql
@@ -643,6 +649,18 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   end;
   ```
 
+- Constants are created with the `constant` keyword and forbid reassignment:
+
+  ```sql
+  declare
+      price constant number := 10;
+  begin
+      price := 20; -- Will throw an exception
+  end;
+  ```
+
+### Fetching Data
+
 - Use `select ... into` to fetch data into variables; `%TYPE` infers the type of a column:
 
   ```sql
@@ -660,16 +678,7 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   end;
   ```
 
-- You can use `--` for single line comments and `/*` for multi line comments.
-- Constants are created with the `constant` keyword and forbid reassignment:
-
-  ```sql
-  declare
-      price constant number := 10;
-  begin
-      price := 20; -- Will throw an exception
-  end;
-  ```
+### Branches and Expressions
 
 - `if ... then ... end if` can be used for branching:
 
@@ -707,6 +716,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   end;
   ```
 
+### Switches
+
 - You may use the `case` keyword for switch cases:
 
   ```sql
@@ -735,6 +746,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   end;
   ```
 
+### Labels and Goto
+
 - A `label`/`goto` equivalent is also available:
 
   ```sql
@@ -749,6 +762,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
       dbms_output.put_line('Goodbye!');
   end;
   ```
+
+### Loops
 
 - The equivalent of the `while` loop is the `loop`. `exit`/`continue` prevents an infinite loop:
 
@@ -794,6 +809,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   end;
   ```
 
+### Types and Objects
+
 - You can also use `%ROWTYPE` to infer the type of a row and select an entire row at once:
 
   ```sql
@@ -821,6 +838,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   end;
   ```
 
+### Exceptions
+
 - You can create custom exceptions:
 
   ```sql
@@ -846,6 +865,9 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   ```
 
 - Using `sqlcode` and `sqlerrm` you can get the last exception's code/error message.
+
+### Cursors
+
 - Using cursors, you can procedurally process data:
 
   ```sql
@@ -911,6 +933,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   end;
   ```
 
+### Locks
+
 - The DB can also lock fields for safe multiple access:
 
   ```sql
@@ -922,6 +946,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
       end loop;
   end;
   ```
+
+### Procedures
 
 - You can create procedures, which are comparable to functions:
 
@@ -977,6 +1003,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   exec get_customer_by_credit(50);
   ```
 
+### Functions
+
 - Functions are similar, but require returning a value:
 
   ```sql
@@ -1009,11 +1037,13 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   end;
   ```
 
-- And remove it with `drop function`:
+- And remove them with `drop function`:
 
   ```sql
   drop function get_total_sales_for_year;
   ```
+
+### Packages
 
 - Packages can be used to group function "interfaces" and variables:
 
@@ -1075,6 +1105,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   drop package body order_management;
   drop package order_management;
   ```
+
+### Triggers
 
 - Triggers follow a similar structure as procedures:
 
@@ -1204,6 +1236,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   alter table customers enable all triggers;
   ```
 
+### Maps
+
 - Maps are also possible in PL/SQL using `table of`:
 
   ```sql
@@ -1244,6 +1278,8 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
       end loop;
   end;
   ```
+
+### Arrays
 
 - Using `varray`, it is also possible to create arrays:
 
