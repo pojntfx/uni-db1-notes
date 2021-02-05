@@ -106,126 +106,6 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   select (w.first_name || ' ' || w.last_name) "Worker", (m.first_name || ' ' || m.last_name) "Manager", w.job_title from employees w left join employees m on w.employee_id = m.manager_id
   ```
 
-### Other Quirks
-
-- Only single quotes are supported.
-- Stuff like `select upper('uwu') from dual` can come in handy.
-- Multiple order by statements? First ordered by first statement, then “sub-ordered” by the second (last name the same -> now first name is evaluated).
-- Want to have nulls first when ordering? Use nulls first or nulls last as the suffix.
-- You can use functions like `upper` and dates when ordering.
-- Removal of duplicates is done with `select distinct`. When multiple columns are being selected, use only one distinct keyword at the start. Multiple nulls are filtered (Null = Null).
-- `... like '%Asus%'` (note the \'s) is basically a full-text search.
-- You can alias long column names with select mylongname as name from contacts or just select mylongname name from contacts. The `as` keyword is optional. Full-text column names are supported by enclosing in "". as can also format strings: `select first_name || ' ' || last_name as "Name" from employees;` yields Alice, Bob and System.
-- It also supports full expression evaluation:
-
-  ```sql
-  select product_name as "Product Name", list_price - standard_cost as "Gross Profit" from products order by "Gross Profit"
-  ```
-
-- You can also create a table alias (using `from employees e`), but you CAN’T USE the `as` keyword.
-- The Oracle equivalent of filter is `fetch n next rows only`: `select * from products order by list_price desc fetch next 5 rows only;`.
-- Filtering by for example a quantity, and you only want the first 10 “condition matches”? Use fext n next rows with ties:
-
-  ```sql
-  select * from inventories order by quantity desc fetch next 5 rows with ties;
-  ```
-
-- You may also use the `fetch next n percent rows only`:
-
-  ```sql
-  select * from inventories order by quantity desc fetch next 10 percent rows only;
-  ```
-
-- Need Pagination? Use offset:
-
-  ```sql
-  select * from products order by standard_cost desc offset 10 rows fetch next 10 rows only;.
-  ```
-
-- Comparisons are done with `=`, NOT `==`.
-- Want to extract a year from a date? Use extract:
-
-  ```sql
-  select * from orders where status = 'Shipped' and extract(year from order_date) = 2017 order by order_date desc fetch next 1 rows with ties;
-  ```
-
-- You can use `()` in `where` clauses to prioritize:
-
-  ```sql
-  select * from orders where (
-  status = 'Canceled' or status = 'Pending' ) and customer_id = 44
-  order by order_date;
-  ```
-
-- The `in` keyword is a useful tool for sub collections and subqueries:
-
-  - `select * from orders where salesman_id in (54, 55, 56) order by order_id;`
-  - `select * from orders where salesman_id not in (54, 55, 56) order by order_id; (you can use not)`
-  - `select * from employees where employee_id in ( select distinct salesman_id from orders where status = 'Canceled' ) order by first_name;` (you can of course also use not)
-
-- Between can also be used for dates:
-
-  ```sql
-  select * from orders where order_date between date '2016-12-01' and date '2016-12-31'
-  ```
-
-- Some examples of `like` (you can use not for all of them):
-
-  - `select * from contacts where last_name like 'St%'`
-  - `select * from contacts where last_name like '%St'`
-  - `select * from contacts where last_name like '%St%'`
-  - `select * from contacts where last_name like 'Po_tinger'` (`_` matches any one character)
-  - `select * from contacts where lower(last_name) like 'st%'`
-  - `select * from contacts where upper(last_name) like 'st%'`
-  - `select * from discounts where discount_message like '%%%'` (returns everything)
-  - `select * from discounts where discount_message like '%%%' escape '!'` (returns everything that includes the string ‘%’)
-
-- You can compare against null with `is null` (`= NULL` does not work). You can negate with not.
-
-- You can count the amount of rows with the `count()` function:
-
-  ```sql
-  select count(*) from products
-  ```
-
-- The group by keyword can be used to find unique data:
-
-  ```sql
-  select status from orders group by status;
-  ```
-
-- By combining group by with count you can count the amount of unique data:
-
-  ```sql
-  select status, count (*) from orders group by status;
-  ```
-
-- `group by` can also be used with the where keyword:
-
-  ```sql
-  select name, count(*) as "Shipped Orders" from orders inner join customers using(customer_id) where status = 'Shipped' group by name order by "Shipped Orders" desc;
-  ```
-
-- `where` can NOT APPEAR AFTER `group by`; use the having keyword instead.
-- The having keyword enables you to filter like with where, but after the group by keyword like so:
-
-  ```sql
-  select status from orders where extract(year from order_date) > '2016' group by status having status like '%d';
-  ```
-
-- The sum function can be used to calculate a total:
-
-  ```sql
-  select sum(unit_price * quantity) from order_items;
-  ```
-
-- It can also be used to calculate a total per row (the group by order_id part is required; group by order_value
-  does not work):
-
-  ```sql
-  select order_id, sum(unit_price * quantity) as order_value from order_items group by order_id;
-  ```
-
 - What is the difference between join and union? join merges horizontally (there are more columns than before, maybe also more rows), union merges vertically (there are more rows than before, but the column count stays the same).
 - `union` is similar to `T1 | T2` in TypeScript; you can use order by and union to remove duplices, but note that we have to use select two times:
 
@@ -251,10 +131,39 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   select last_name from contacts minus select last_name from employees;
   ```
 
-- It is a good idea to always specify the columns when inserting:
+### Aliases
+
+- You can alias long column names with select mylongname as name from contacts or just select mylongname name from contacts. The `as` keyword is optional. Full-text column names are supported by enclosing in "". as can also format strings: `select first_name || ' ' || last_name as "Name" from employees;` yields Alice, Bob and System.
+
+- You can also create a table alias (using `from employees e`), but you CAN’T USE the `as` keyword.
+
+### Limits and Pagination
+
+- The Oracle equivalent of filter is `fetch n next rows only`: `select * from products order by list_price desc fetch next 5 rows only;`.
+- You may also use the `fetch next n percent rows only`:
 
   ```sql
-  insert into discounts(discount_name, amount, start_date, expired_date) values ('Summer Promotion', 9.5, date '2017-05-01', date '2017-08-31')
+  select * from inventories order by quantity desc fetch next 10 percent rows only;
+  ```
+
+- Filtering by for example a quantity, and you only want the first 10 “condition matches”? Use `fetch n next rows with ties`:
+
+  ```sql
+  select * from inventories order by quantity desc fetch next 5 rows with ties;
+  ```
+
+- Need Pagination? Use offset:
+
+  ```sql
+  select * from products order by standard_cost desc offset 10 rows fetch next 10 rows only;.
+  ```
+
+### Dates and Intervals
+
+- Want to extract a year from a date? Use extract:
+
+  ```sql
+  select * from orders where status = 'Shipped' and extract(year from order_date) = 2017 order by order_date desc fetch next 1 rows with ties;
   ```
 
 - Want to get the current date? Use current_date:
@@ -263,221 +172,6 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   select current_date from dual;
   ```
 
-- You can also “insert from select” using `insert into`:
-
-  ```sql
-  insert into sales(customer_id, product_id, order_date, total) select customer_id, product_id, order_date, sum(quantity * unit_price) amount from orders inner join order_items using(order_id) where status = 'Shipped' group by customer_id, product_id, order_date;
-  ```
-
-- It’s even possible to “create a table from select” using `create table x as`, basically coping its schema (`where 1 = 0 skips` copying the rows):
-
-  ```sql
-  create table sales_2017 as select * from sales where 1 = 0;
-  ```
-
-- Using insert all, it is possible to insert multiple rows at once (note the lack of commas between the into keywords. Here, the subquery is ignored/a placeholder.):
-
-  ```sql
-  insert all into fruits (fruit_name, color) values ('Apple', 'Red') into fruits (fruit_name, color) values ('Orange', 'Orange') into fruits (fruit_name, color) values ('Banana', 'Yellow') select 1 from dual
-  ```
-
-- You can also use conditions based on the subquery (`insert first` is the equivalent of a switch case.):
-
-  ```sql
-  insert all when amount < 10000 then into small_orders when amount >= 10000 then into big_orders select order_id, customer_id, (quantity * unit_price) amount from orders inner join order_items using (order_id)
-  ```
-
-- Using `case` it is possible to create if/else constructs:
-
-  ```sql
-  select product_name, list_price, case category_id when 1 then round(list_price * 0.05, 2) when 2 then round(list_price * 0.1, 2) else round(list_price * 0.2, 2) end discount from products
-  ```
-
-- `case` is also useful for conditional grouping:
-
-  ```sql
-  select * from locations order by country_id, case country_id when 'US' then state else city end;
-  ```
-
-- `case` also evaluates to an expression, so you can use it for conditional updates:
-
-  ```sql
-  update products set list_price = case when list_price < 20 then 30 else 50 end where list_price < 50;
-  ```
-
-- Using `round` it is possible to round numbers (returns 5.23):
-
-  ```sql
-  select round(5.234234234234, 2) from dual;
-  ```
-
-- `generated by default as identity` is quite useful for auto-incrementing columns such as PKs:
-
-  ```sql
-  create table persons ( person_id number generated by default as identity, first_name varchar2(50) not null, last_name varchar2(50), primary key(person_id) );
-  ```
-
-- `generated always as identity` is the same but does not allow setting it manually.
-- `alter table` can be used to add columns using add:
-
-  ```sql
-  alter table persons add birthdate date not null;
-  ```
-
-- You can also add multiples at once (note that there is no column keyword):
-
-  ```sql
-  alter table persons add ( phone varchar2(20), email varchar2(100) )
-  ```
-
-- You can use `desc mytable` to show the schema for a table.
-- `modify` can change the column type (note that there is no column keyword):
-
-  ```sql
-  alter table persons modify birthdate date null;
-  ```
-
-- `drop column` can be used to remove a column
-
-  ```sql
-  alter table persons drop column birthdate;
-  ```
-
-- `rename column` can be used to rename a column:
-
-  ```sql
-  alter table persons rename column first_name to forename;
-  ```
-
-- `rename to` can be used to rename a table:
-
-  ```sql
-  alter table persons rename to people;
-  ```
-
-- `rename promotions to promotions_two` is an alternative syntax.
-- You can create virtual columns in regular tables without using views with `alter table x add ... as` (note the required `(` after the `as` keyword):
-
-  ```sql
-  alter table parts add (capacity_description as ( case when capacity <= 8 then 'Small' when capacity > 8 then 'Large' end ));
-  ```
-
-- The size of a `varchar2` is adjustable afterwards (note that this checks if any current `varchar2`s are larger than the new size and fails if they are.):
-
-  ```sql
-  alter table persons modify first_name varchar2(255);
-  ```
-
-- You can use `replace` to replace strings:
-
-  ```sql
-  update accounts set phone = replace(phone, '+1-', '');
-  ```
-
-- Using the `generated always as` keyword with `modify` allows you to update virtual columns:
-
-  ```sql
-  alter table accounts modify full_name varchar2(52) generated always as (last_name || ', ' || first_name);
-  ```
-
-- You can use the default keyword to set a default value:
-
-  ```sql
-  alter table accounts add status number(1,0) default 1 not null.
-  ```
-
-- A more efficient logical version of drop column is set unused column:
-
-  ```sql
-  alter table suppliers set unused column fax;
-  ```
-
-- You can now drop it using:
-
-  ```sql
-  alter table suppliers drop unused columns;
-  ```
-
-- If you want to physically drop a column, use `drop`:
-
-  ```sql
-  alter table suppliers drop (email, phone);
-  ```
-
-- You can drop a table with `drop table`:
-
-  ```sql
-  drop table people;
-  ```
-
-- Appending `purge` clears the recycle bin; appending `cascade constraints` drop all related constraints.
-- You can clear a table using `truncate table`:
-
-  ```sql
-  truncate table customers_copy;
-  ```
-
-- The same limitations as with drop table concerning constraints apply, so appending cascade (WITHOUT constraints) drops all related ones.
-- You can create a number within a range: `number(1,0)`.
-- It is possible to add constraints (any constraints, a primary key in this example) after creating a table with add constraint:
-
-  ```sql
-  alter table purchase_orders add constraint purchase_orders_order_id_pk primary key(order_id);
-  ```
-
-- You may remove a constraint with `drop constraint`:
-
-  ```sql
-  alter table purchase_orders drop constraint purchase_orders_order_id_pk;
-  ```
-
-- Instead of removing it, you can also use `disable constraint`:
-
-  ```sql
-  alter table purchase_orders disable constraint purchase_orders_order_id_pk;
-  ```
-
-- And re-enable it with `enable constraint`:
-
-  ```sql
-  alter table purchase_orders enable constraint purchase_orders_order_id_pk;
-  ```
-
-- You can also add foreign key constraints:
-
-  ```sql
-  alter table suppliers add constraint suppliers_supplier_groups_fk foreign key(group_id) references supplier_groups(group_id);
-  ```
-
-- Using a check constraint, arbitrary expressions can be evaluated:
-
-  ```sql
-  alter table parts add constraint check_buy_price_positive check(buy_price > 0);
-  ```
-
-- A unique constraint prevents unwanted duplicates:
-
-  ```sql
-  alter table clients add constraint unique_clients_phone unique(phone);
-  ```
-
-- With a not null constraint, fuzzy logic can be avoided; it is however best to define nullable fields at schema creation, as the syntax differs from the add constraint/drop constraint logic above:
-
-  ```sql
-  alter table clients modify ( 7 phone not null );
-  ```
-
-- You can remove them by modifying it to null explicitly:
-
-  ```sql
-  alter table clients modify ( phone null );
-  ```
-
-- The `number` type is used for all types of numbers by specifying precision and scale: `number(6)` (or `number(6,0)`) is a signed integer fitting 6 digits, `number(6,2)` is a float with two digits precision. The DB doesn’t just cut of numbers, it rounds them.
-- The float type can be emulated by the number type, i.e. `float(2)` is equal to `number(38,2)`. The argument is in bits instead of digits though.
-- The `lengthdb` function can be used to get the length of field in bytes.
-- The char type has a fixed length: name `char(10)` or name `char(10 bytes)`, meaning that a char always takes up the amount of bytes set. `nchar` is the same but UTF-8 or UTF-16 any doesn’t take bytes.
-- The `varchar2` type also takes an argument for the length in bytes, which in ASCII corresponds to the amount of characters. `nvarchar2` is the same but UTF-8 or UTF-16 and doesn’t take bytes.
 - The `to_char` function can convert dates (and timestamps) to chars:
 
   ```sql
@@ -532,8 +226,347 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   select interval '9' day from dual, select interval '9' month from dual, select interval '9-2' year to month from dual or select interval '09:08:6.75' hour to second(2) from dual;
   ```
 
-- You can use the `floor`, `round` and `ceil` functions to get rounded values.
 - Using the `months_between` function, the count of months between two dates can be computed.
+
+### Expressions
+
+- Only single quotes are supported.
+- Comparisons are done with `=`, NOT `==`.
+- It also supports full expression evaluation:
+
+```sql
+select product_name as "Product Name", list_price - standard_cost as "Gross Profit" from products order by "Gross Profit"
+```
+
+- You can use `()` in `where` clauses to prioritize:
+
+  ```sql
+  select * from orders where (
+  status = 'Canceled' or status = 'Pending' ) and customer_id = 44
+  order by order_date;
+  ```
+
+- The `in` keyword is a useful tool for sub collections and subqueries:
+
+  - `select * from orders where salesman_id in (54, 55, 56) order by order_id;`
+  - `select * from orders where salesman_id not in (54, 55, 56) order by order_id; (you can use not)`
+  - `select * from employees where employee_id in ( select distinct salesman_id from orders where status = 'Canceled' ) order by first_name;` (you can of course also use not)
+
+- Between can also be used for dates:
+
+  ```sql
+  select * from orders where order_date between date '2016-12-01' and date '2016-12-31'
+  ```
+
+- `... like '%Asus%'` (note the \'s) is basically a full-text search.
+- Some examples of `like` (you can use `not` for all of them):
+
+  - `select * from contacts where last_name like 'St%'`
+  - `select * from contacts where last_name like '%St'`
+  - `select * from contacts where last_name like '%St%'`
+  - `select * from contacts where last_name like 'Po_tinger'` (`_` matches any one character)
+  - `select * from contacts where lower(last_name) like 'st%'`
+  - `select * from contacts where upper(last_name) like 'st%'`
+  - `select * from discounts where discount_message like '%%%'` (returns everything)
+  - `select * from discounts where discount_message like '%%%' escape '!'` (returns everything that includes the string ‘%’)
+
+- You can compare against null with `is null` (`= NULL` does not work). You can negate with not.
+
+### Grouping and Ordering
+
+- You can use functions like `upper` and dates when ordering.
+- The group by keyword can be used to find unique data:
+
+  ```sql
+  select status from orders group by status;
+  ```
+
+- By combining group by with count you can count the amount of unique data:
+
+  ```sql
+  select status, count (*) from orders group by status;
+  ```
+
+- `group by` can also be used with the where keyword:
+
+  ```sql
+  select name, count(*) as "Shipped Orders" from orders inner join customers using(customer_id) where status = 'Shipped' group by name order by "Shipped Orders" desc;
+  ```
+
+- `where` can NOT APPEAR AFTER `group by`; use the having keyword instead.
+- The having keyword enables you to filter like with where, but after the group by keyword like so:
+
+  ```sql
+  select status from orders where extract(year from order_date) > '2016' group by status having status like '%d';
+  ```
+
+- Multiple order by statements? First ordered by first statement, then “sub-ordered” by the second (last name the same -> now first name is evaluated).
+- Want to have nulls first when ordering? Use nulls first or nulls last as the suffix.
+- Removal of duplicates is done with `select distinct`. When multiple columns are being selected, use only one distinct keyword at the start. Multiple nulls are filtered (Null = Null).
+
+### Counting and Sums
+
+- You can count the amount of rows with the `count()` function:
+
+  ```sql
+  select count(*) from products
+  ```
+
+- The sum function can be used to calculate a total:
+
+  ```sql
+  select sum(unit_price * quantity) from order_items;
+  ```
+
+- It can also be used to calculate a total per row (the group by order_id part is required; group by order_value
+  does not work):
+
+  ```sql
+  select order_id, sum(unit_price * quantity) as order_value from order_items group by order_id;
+  ```
+
+### Inserting
+
+- It is a good idea to always specify the columns when inserting:
+
+  ```sql
+  insert into discounts(discount_name, amount, start_date, expired_date) values ('Summer Promotion', 9.5, date '2017-05-01', date '2017-08-31')
+  ```
+
+- You can also “insert from select” using `insert into`:
+
+  ```sql
+  insert into sales(customer_id, product_id, order_date, total) select customer_id, product_id, order_date, sum(quantity * unit_price) amount from orders inner join order_items using(order_id) where status = 'Shipped' group by customer_id, product_id, order_date;
+  ```
+
+- It’s even possible to “create a table from select” using `create table x as`, basically coping its schema (`where 1 = 0 skips` copying the rows):
+
+  ```sql
+  create table sales_2017 as select * from sales where 1 = 0;
+  ```
+
+- Using insert all, it is possible to insert multiple rows at once (note the lack of commas between the into keywords. Here, the subquery is ignored/a placeholder.):
+
+  ```sql
+  insert all into fruits (fruit_name, color) values ('Apple', 'Red') into fruits (fruit_name, color) values ('Orange', 'Orange') into fruits (fruit_name, color) values ('Banana', 'Yellow') select 1 from dual
+  ```
+
+- You can also use conditions based on the subquery (`insert first` is the equivalent of a switch case.):
+
+  ```sql
+  insert all when amount < 10000 then into small_orders when amount >= 10000 then into big_orders select order_id, customer_id, (quantity * unit_price) amount from orders inner join order_items using (order_id)
+  ```
+
+### Switches
+
+- Using `case` it is possible to create if/else constructs:
+
+  ```sql
+  select product_name, list_price, case category_id when 1 then round(list_price * 0.05, 2) when 2 then round(list_price * 0.1, 2) else round(list_price * 0.2, 2) end discount from products
+  ```
+
+- `case` is also useful for conditional grouping:
+
+  ```sql
+  select * from locations order by country_id, case country_id when 'US' then state else city end;
+  ```
+
+- `case` also evaluates to an expression, so you can use it for conditional updates:
+
+  ```sql
+  update products set list_price = case when list_price < 20 then 30 else 50 end where list_price < 50;
+  ```
+
+### Helper Functions
+
+- Stuff like `select upper('uwu') from dual` can come in handy.
+- Using `round` it is possible to round numbers (returns 5.23):
+
+  ```sql
+  select round(5.234234234234, 2) from dual;
+  ```
+
+- You can use `replace` to replace strings:
+
+  ```sql
+  update accounts set phone = replace(phone, '+1-', '');
+  ```
+
+- You can use the `floor`, `round` and `ceil` functions to get rounded values.
+
+### Auto-Generated Primary Keys
+
+- `generated by default as identity` is quite useful for auto-incrementing columns such as PKs:
+
+  ```sql
+  create table persons ( person_id number generated by default as identity, first_name varchar2(50) not null, last_name varchar2(50), primary key(person_id) );
+  ```
+
+- `generated always as identity` is the same but does not allow setting it manually.
+
+### Modifying Columns
+
+- You can use `desc mytable` to show the schema for a table.
+- `alter table` can be used to add columns using add:
+
+  ```sql
+  alter table persons add birthdate date not null;
+  ```
+
+- You can also add multiples at once (note that there is no column keyword):
+
+  ```sql
+  alter table persons add ( phone varchar2(20), email varchar2(100) )
+  ```
+
+- `modify` can change the column type (note that there is no column keyword):
+
+  ```sql
+  alter table persons modify birthdate date null;
+  ```
+
+- `drop column` can be used to remove a column
+
+  ```sql
+  alter table persons drop column birthdate;
+  ```
+
+- `rename column` can be used to rename a column:
+
+  ```sql
+  alter table persons rename column first_name to forename;
+  ```
+
+- `rename to` can be used to rename a table:
+
+  ```sql
+  alter table persons rename to people;
+  ```
+
+- `rename promotions to promotions_two` is an alternative syntax.
+
+- You can use the default keyword to set a default value:
+
+  ```sql
+  alter table accounts add status number(1,0) default 1 not null.
+  ```
+
+- A more efficient logical version of drop column is set unused column:
+
+  ```sql
+  alter table suppliers set unused column fax;
+  ```
+
+- You can now drop it using:
+
+  ```sql
+  alter table suppliers drop unused columns;
+  ```
+
+- If you want to physically drop a column, use `drop`:
+
+  ```sql
+  alter table suppliers drop (email, phone);
+  ```
+
+### Virtual Columns
+
+- You can create virtual columns in regular tables without using views with `alter table x add ... as` (note the required `(` after the `as` keyword):
+
+  ```sql
+  alter table parts add (capacity_description as ( case when capacity <= 8 then 'Small' when capacity > 8 then 'Large' end ));
+  ```
+
+- The size of a `varchar2` is adjustable afterwards (note that this checks if any current `varchar2`s are larger than the new size and fails if they are.):
+
+  ```sql
+  alter table persons modify first_name varchar2(255);
+  ```
+
+### Modifying Tables
+
+- You can drop a table with `drop table`:
+
+  ```sql
+  drop table people;
+  ```
+
+- Appending `purge` clears the recycle bin; appending `cascade constraints` drop all related constraints.
+- You can clear a table using `truncate table`:
+
+  ```sql
+  truncate table customers_copy;
+  ```
+
+- The same limitations as with drop table concerning constraints apply, so appending cascade (WITHOUT constraints) drops all related ones.
+
+### Constraints
+
+- It is possible to add constraints (any constraints, a primary key in this example) after creating a table with add constraint:
+
+  ```sql
+  alter table purchase_orders add constraint purchase_orders_order_id_pk primary key(order_id);
+  ```
+
+- You may remove a constraint with `drop constraint`:
+
+  ```sql
+  alter table purchase_orders drop constraint purchase_orders_order_id_pk;
+  ```
+
+- Instead of removing it, you can also use `disable constraint`:
+
+  ```sql
+  alter table purchase_orders disable constraint purchase_orders_order_id_pk;
+  ```
+
+- And re-enable it with `enable constraint`:
+
+  ```sql
+  alter table purchase_orders enable constraint purchase_orders_order_id_pk;
+  ```
+
+- You can also add foreign key constraints:
+
+  ```sql
+  alter table suppliers add constraint suppliers_supplier_groups_fk foreign key(group_id) references supplier_groups(group_id);
+  ```
+
+- Using a check constraint, arbitrary expressions can be evaluated:
+
+  ```sql
+  alter table parts add constraint check_buy_price_positive check(buy_price > 0);
+  ```
+
+- A unique constraint prevents unwanted duplicates:
+
+  ```sql
+  alter table clients add constraint unique_clients_phone unique(phone);
+  ```
+
+- With a not null constraint, fuzzy logic can be avoided; it is however best to define nullable fields at schema creation, as the syntax differs from the add constraint/drop constraint logic above:
+
+  ```sql
+  alter table clients modify ( 7 phone not null );
+  ```
+
+- You can remove them by modifying it to null explicitly:
+
+  ```sql
+  alter table clients modify ( phone null );
+  ```
+
+### Types
+
+- You can create a number within a range: `number(1,0)`.
+- The `number` type is used for all types of numbers by specifying precision and scale: `number(6)` (or `number(6,0)`) is a signed integer fitting 6 digits, `number(6,2)` is a float with two digits precision. The DB doesn’t just cut of numbers, it rounds them.
+- The float type can be emulated by the number type, i.e. `float(2)` is equal to `number(38,2)`. The argument is in bits instead of digits though.
+- The `lengthdb` function can be used to get the length of field in bytes.
+- The char type has a fixed length: name `char(10)` or name `char(10 bytes)`, meaning that a char always takes up the amount of bytes set. `nchar` is the same but UTF-8 or UTF-16 any doesn’t take bytes.
+- The `varchar2` type also takes an argument for the length in bytes, which in ASCII corresponds to the amount of characters. `nvarchar2` is the same but UTF-8 or UTF-16 and doesn’t take bytes.
+
+### Views
+
 - You can create a view with `create view x as select ...`:
 
   ```sql
