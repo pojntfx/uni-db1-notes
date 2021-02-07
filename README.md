@@ -39,43 +39,43 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
 
 ### Joins
 
-- An inner join matches stuff in both tables:
+- An **inner join** matches stuff in both tables:
 
   ```sql
   select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a inner join palette_b b on a.color = b.color;
   ```
 
-- A left (outer) join matches everything in the left tables plus what matches in the right table:
+- A **left (outer) join** matches everything in the left tables plus what matches in the right table:
 
   ```sql
   select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a left join palette_b b on a.color = b.color
   ```
 
-- This left (outer) join matches everything that is in the left table and not in the right table:
+- This **left (outer)** join matches everything that is in the left table and not in the right table:
 
   ```sql
   select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a left join palette_b b on a.color = b.color where b.id is null
   ```
 
-- A right (outer) join matches everything in the right join plus what matches in the left table:
+- A **right (outer) join** matches everything in the right join plus what matches in the left table:
 
   ```sql
   select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a right join palette_b b on a.color = b.color;
   ```
 
-- This right (outer) join matches everything that is in the right table and not in the left table:
+- This **right (outer) join** matches everything that is in the right table and not in the left table:
 
   ```sql
   select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a right join palette_b b on a.color = b.color where a.id is null;
   ```
 
-- A full (outer) join merges both tables:
+- A **full (outer) join** merges both tables:
 
   ```sql
   select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a full join palette_b b on a.color = b.color;
   ```
 
-- This full (outer) join merges both tables and removes those rows which are in both:
+- This **full (outer) join** merges both tables and removes those rows which are in both:
 
   ```sql
   select a.id as id_a, a.color as color_a, b.id as id_b, b.color as color_b from palette_a a full join palette_b b on a.color = b.color where a.id is null or b.id is null;
@@ -160,13 +160,13 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
 
 ### Dates and Intervals
 
-- Want to extract a year from a date? Use extract:
+- Want to extract a year from a date? Use `extract`:
 
   ```sql
   select * from orders where status = 'Shipped' and extract(year from order_date) = 2017 order by order_date desc fetch next 1 rows with ties;
   ```
 
-- Want to get the current date? Use current_date:
+- Want to get the current date? Use `current_date`:
 
   ```sql
   select current_date from dual;
@@ -184,7 +184,7 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   select to_date('2021-01-12', 'YYYY-MM-DD') from dual;
   ```
 
-- Alternatively, the date literal uses the YYYY-MM-DD format and does not require format specs:
+- Alternatively, the date literal uses the `YYYY-MM-DD` format and does not require format specs:
 
   ```sql
   select date '1969-04-20' from dual;
@@ -196,7 +196,7 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   select localtimestamp from dual;
   ```
 
-- You can get the current datetime with `localtimestamp`:
+- You can get the current date & time with `datelocaltimestamp`:
 
   ```sql
   select localtimestamp from dual;
@@ -252,7 +252,7 @@ select product_name as "Product Name", list_price - standard_cost as "Gross Prof
   - `select * from orders where salesman_id not in (54, 55, 56) order by order_id; (you can use not)`
   - `select * from employees where employee_id in ( select distinct salesman_id from orders where status = 'Canceled' ) order by first_name;` (you can of course also use not)
 
-- Between can also be used for dates:
+- `between` can also be used for dates:
 
   ```sql
   select * from orders where order_date between date '2016-12-01' and date '2016-12-31'
@@ -270,31 +270,31 @@ select product_name as "Product Name", list_price - standard_cost as "Gross Prof
   - `select * from discounts where discount_message like '%%%'` (returns everything)
   - `select * from discounts where discount_message like '%%%' escape '!'` (returns everything that includes the string ‘%’)
 
-- You can compare against null with `is null` (`= NULL` does not work). You can negate with not.
+- You can compare against null with `is null` (`= NULL` does not work). You can negate with `not`.
 
 ### Grouping and Ordering
 
 - You can use functions like `upper` and dates when ordering.
-- The group by keyword can be used to find unique data:
+- The `group by` keyword can be used to find unique data:
 
   ```sql
   select status from orders group by status;
   ```
 
-- By combining group by with count you can count the amount of unique data:
+- By combining `group by` with `count` you can count the amount of unique data:
 
   ```sql
   select status, count (*) from orders group by status;
   ```
 
-- `group by` can also be used with the where keyword:
+- `group by` can also be used with the `where` keyword:
 
   ```sql
   select name, count(*) as "Shipped Orders" from orders inner join customers using(customer_id) where status = 'Shipped' group by name order by "Shipped Orders" desc;
   ```
 
 - `where` can NOT APPEAR AFTER `group by`; use the having keyword instead.
-- The having keyword enables you to filter like with where, but after the group by keyword like so:
+- The `having` keyword enables you to filter like with `where`, but after the `group by` keyword like so:
 
   ```sql
   select status from orders where extract(year from order_date) > '2016' group by status having status like '%d';
@@ -312,14 +312,13 @@ select product_name as "Product Name", list_price - standard_cost as "Gross Prof
   select count(*) from products
   ```
 
-- The sum function can be used to calculate a total:
+- The `sum` function can be used to calculate a total:
 
   ```sql
   select sum(unit_price * quantity) from order_items;
   ```
 
-- It can also be used to calculate a total per row (the group by order_id part is required; group by order_value
-  does not work):
+- It can also be used to calculate a total per row (the group by `order_id` part is required; `group by order_value` does not work):
 
   ```sql
   select order_id, sum(unit_price * quantity) as order_value from order_items group by order_id;
