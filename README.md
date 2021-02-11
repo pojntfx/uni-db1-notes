@@ -106,14 +106,14 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
   select (w.first_name || ' ' || w.last_name) "Worker", (m.first_name || ' ' || m.last_name) "Manager", w.job_title from employees w left join employees m on w.employee_id = m.manager_id
   ```
 
-- What is the difference between join and union? join merges horizontally (there are more columns than before, maybe also more rows), union merges vertically (there are more rows than before, but the column count stays the same).
-- `union` is similar to `T1 | T2` in TypeScript; you can use order by and union to remove duplices, but note that we have to use select two times:
+- What is the difference between `join` and `union`? `join` merges horizontally (there are more columns than before, maybe also more rows), `union` merges vertically (there are more rows than before, but the column count stays the same).
+- `union` is similar to `T1 | T2` in TypeScript; you can use order by and union to remove duplicates, but note that we have to use select two times:
 
   ```sql
   select first_name, last_name, email, 'contact' as role from contacts union select first_name, last_name, email, 'employee' as role from employees order by role
   ```
 
-- `union all` is similar to T1 & T2 in TypeScript; it keeps duplicates:
+- `union all` is similar to `T1 & T2` in TypeScript; it keeps duplicates:
 
   ```sql
   select last_name from contacts union all select last_name from employees;
@@ -133,7 +133,7 @@ Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</
 
 ### Aliases
 
-- You can alias long column names with select mylongname as name from contacts or just select mylongname name from contacts. The `as` keyword is optional. Full-text column names are supported by enclosing in "". as can also format strings: `select first_name || ' ' || last_name as "Name" from employees;` yields Alice, Bob and System.
+- You can alias long column names with `select mylongname as name from contacts` or just `select mylongname name from contacts`. The `as` keyword is optional. Full-text column names are supported by enclosing in "". as can also format strings: `select first_name || ' ' || last_name as "Name" from employees;` yields Alice, Bob and System.
 
 - You can also create a table alias (using `from employees e`), but you CAN’T USE the `as` keyword.
 
