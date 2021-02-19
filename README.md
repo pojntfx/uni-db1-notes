@@ -498,6 +498,10 @@ select product_name as "Product Name", list_price - standard_cost as "Gross Prof
   ```
 
 - The same limitations as with drop table concerning constraints apply, so appending cascade (WITHOUT constraints) drops all related ones.
+- You can clear the recycle bin with:
+  ```sql
+  purge recyclebin;
+  ```
 
 ### Constraints
 
