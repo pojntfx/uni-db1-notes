@@ -14,6 +14,12 @@ Run the following to get the commands to drop all tables and their constraints:
 
 ```sql
 select 'drop table ', table_name, 'cascade constraints;' from user_tables;
+
+begin
+  for i in (select view_name from user_views) loop
+    execute immediate 'drop view ' || i.view_name;
+  end loop;
+end;
 ```
 
 Now copy & paste the output into SQL Developer's SQL worksheet and hit <kbd>F5</kbd>.
