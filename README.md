@@ -603,6 +603,26 @@ select product_name as "Product Name", list_price - standard_cost as "Gross Prof
   update ( select list_price from products ) set list_price = list_price * 1.5;
   ```
 
+### Indexes
+
+- You can create an index with `create index`:
+
+  ```sql
+  create index members_last_name on members(last_name);
+  ```
+
+- You can also create an index spanning multiple columns:
+
+  ```sql
+  create index members_full_name on members(first_name, last_name);
+  ```
+
+- You can drop an index with `drop index`:
+
+  ```sql
+  drop index members_full_name;
+  ```
+
 ## PL/SQL
 
 ### Block Structure
