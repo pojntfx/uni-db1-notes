@@ -13,12 +13,24 @@ Most of the following is based on the [Oracle Tutorial](https://www.oracletutori
 Run the following to get the commands to drop all tables and their constraints:
 
 ```sql
-select 'drop table ', table_name, 'cascade constraints;' from user_tables;
-
 begin
+  for i in (select index_name from user_indexes where index_name not like '%_PK') loop
+    execute immediate 'drop index ' || i.index_name;
+  end loop;
+
+  for i in (select trigger_name from user_triggers) loop
+    execute immediate 'drop trigger ' || i.trigger_name;
+  end loop;
+
   for i in (select view_name from user_views) loop
     execute immediate 'drop view ' || i.view_name;
   end loop;
+
+  for i in (select table_name from user_tables) loop
+    execute immediate 'drop table ' || i.table_name || ' cascade constraints';
+  end loop;
+
+  execute immediate 'purge recyclebin';
 end;
 ```
 
