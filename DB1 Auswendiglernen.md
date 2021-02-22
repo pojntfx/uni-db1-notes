@@ -286,4 +286,4 @@ Umsetzung durch ...
 ### Impedance Mismatch
 
 - `TOO_MANY_ROWS`: Mehr als ein Datensatz
-- `NO_DATA_FOUND`: Null Datensätze
+- `NO_DATA_FOUND`: Null Datensätze (nicht streng genommen ein Impendance Mismatch)
