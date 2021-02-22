@@ -126,10 +126,10 @@ Der Foreign Key, welcher B aus A referenziert, ist ein Candidate Key von B (meis
 
 ### Restartfähige Skripte
 
-- Löschen Constraints
-- Löschen Objekte
-- Anlegen Objekte
-- Anlegen Constraints
+1. Löschen Constraints
+2. Löschen Objekte
+3. Anlegen Objekte
+4. Anlegen Constraints
 
 ### Delta-Skripte
 
@@ -171,6 +171,17 @@ Wenn Abfragen über mehrere Tabellen gemacht werden, so müssen alle Abfragen fe
 
 ## Modellierung
 
+### Datenbankentwurfsablauf
+
+1. **Input:** Reale Welt
+2. Anforderungen analysieren
+3. Entwurf (konzeptionell) erstellen
+4. Entwurf (logischen) erstellen
+5. Implementieren
+6. **Output**: System
+
+Dabei wird nebenläufig kontinuierlich getestet.
+
 ### Abbildungsprozess
 
 - Realwelt
@@ -197,6 +208,17 @@ Wenn Abfragen über mehrere Tabellen gemacht werden, so müssen alle Abfragen fe
 
 ### Anforderungsdokument
 
+Und jetzt, ein paar positive Adjektive (man darf sich schon auf BWL freuen) ... bzw. die "Wünschenswerten Eigenschaften von Anforderungsdokumenten":
+
+- Korrektheit
+- Vollständigkeit
+- Konsistenz
+- Einfachkeit
+- Eindeutig
+- In Arial 11 Punkt und mit angehängtem Quellcode als Adobe™ Reader® 9000 lesbare PDF (duh!)
+
+Die Struktur sollte folgendes Beinhalten
+
 - Informationsanforderungen
 - Bearbeitungsanforderungen
 - Funktionale Anforderungen
@@ -210,6 +232,8 @@ Wenn Abfragen über mehrere Tabellen gemacht werden, so müssen alle Abfragen fe
 - **Kardinalität**: Maximale Anzahl an Elementen in Beziehung
 
 ### Redundanz-Anomalien
+
+Folgende Anomalien treten durch Redundanzen auf:
 
 - Änderungsanomalie
 - Löschanomalie
@@ -230,8 +254,12 @@ Wenn Abfragen über mehrere Tabellen gemacht werden, so müssen alle Abfragen fe
 
 ### Indizierung
 
+#### Problemfelder von Indizes
+
 - Im temporären Speichern funktionieren Indizes nicht mehr
-- Falsche Anwendung von Indizes kann sogar langsam als keine Indexe sein
+- Falsche Anwendung von Indizes kann sogar langsamer als keine Indizes sein. Ohne Indizes werden immer alle Zeilen einer Tabelle evaluiert; bei Indizes wird immer von einer Position ausgehend, bis die `where`-Clause eintritt, evaluiert. Letztere Strategie besitzt damit auch einen Overhead, welcher teuerer als die Ersparnis durch das Abbrechen nach dem Eintreten der `where`-Clause sein kann.
+
+#### Spaltenwahl für Indizes
 
 Bei der Erstellung eines Indexes sollte immer die Spalte mit der höchsten Selektivität ($> 0,8$) zuerst angeben werden, welche sich mit folgender Formel berechnen lässt:
 
@@ -297,8 +325,8 @@ Verhindern von ...
 
 Umsetzung durch ...
 
-- Schreib-, Sperr- und Exklusiv-Sperren (Funktional)
-- Table-, Page- und Row-Level-Sperren (Physisch)
+- **Funktionale Sperr-Ebene**: Schreib-, Sperr- und Exklusiv-Sperren
+- **Physische Sperr-Ebene**: Table-, Page- und Row-Level-Sperren
 
 → Z.B. durch `select ... for update of ...`
 
@@ -312,3 +340,7 @@ Umsetzung durch ...
 
 - `TOO_MANY_ROWS`: Mehr als ein Datensatz
 - `NO_DATA_FOUND`: Null Datensätze (nicht streng genommen ein Impendance Mismatch)
+
+### Definition Cursor
+
+Ergebnis einer Abfrage wird in einer Tabelle abgelegt, von welcher dann $n$-mal gefetched werden kann.
