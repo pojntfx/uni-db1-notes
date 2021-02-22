@@ -47,7 +47,7 @@ Admins:
 ### Services
 
 - Storage, Query & Manipulation of Data
-- Accessable Data Dictionary & System Dialog
+- Data Dictionary & System Dialog
 - Transactional Support
 - Multi-User Support
 - Recovery Service
@@ -57,8 +57,14 @@ Admins:
 
 ### Metadaten
 
-- Data Dictionary: Metadaten der DB-Objekte
-- System Catalog: Status und Konfiguration
+- **Data Dictionary**: Metadaten der DB-Objekte
+- **System Catalog**: Status und Konfiguration
+
+### Interne Dateistruktur
+
+- $n$ Datendateien (`n = 1...MAXDATAFILES`)
+- Control-Files
+- Logfiles
 
 ### Hintergrundprozesse
 
@@ -86,6 +92,16 @@ Log-Dateien sind ...
 
 - Datenbank: Objekte zusammen **verwalten**
 - Schema: Objekte zusammen **betrachten**
+
+### Verwendungszwecke für Views
+
+- Trennung der Anwendungsschicht vom Unternehmensmodell (ja, jede Datenbank stellt ein Unternehmen dar, werter menhir)
+- Sicherheit
+- Zugriffsstrukturen
+- Vereinfachte Schemaevolutionen
+- Einfügen und Löschen einschränken
+
+→ Am besten immer nur via Views auf Daten zugreifen
 
 ## Keys
 
