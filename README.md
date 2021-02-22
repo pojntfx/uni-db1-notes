@@ -8,9 +8,9 @@ If you intend on learning how to work with databases, please refrain from using 
 
 ## Contents
 
-- DB 1 Syntax Details (in English): [Markdown](./DB1%20Syntax%20Details.md) or [PDF](https://github.com/pojntfx/uni-db1-notes/releases)
-- DB 1 Syntax Cheatsheet (in German): [Markdown](./DB1%20Syntax-Cheatsheet.md) or [PDF](https://github.com/pojntfx/uni-db1-notes/releases)
-- DB 1 Theory Summary (in German): [Markdown](./DB1%20Auswendiglernen.md) or [PDF](https://github.com/pojntfx/uni-db1-notes/releases)
+- DB 1 Syntax Details (in English): [PDF](https://github.com/pojntfx/uni-db1-notes/releases) or [Markdown](./DB1%20Syntax%20Details.md)
+- DB 1 Syntax Cheatsheet (in German): [PDF](https://github.com/pojntfx/uni-db1-notes/releases) or [Markdown](./DB1%20Syntax-Cheatsheet.md)
+- DB 1 Theory Summary (in German): [PDF](https://github.com/pojntfx/uni-db1-notes/releases) or [Markdown](./DB1%20Auswendiglernen.md)
 
 ## Contributing
 
