@@ -1,0 +1,23 @@
+name: pandoc CI
+
+on: [push, pull_request]
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install -y texlive-full pandoc
+      - name: Compile PDFs
+        run: ./compile.sh
+      - name: Publish PDFs to GitHub releases
+        if: ${{ github.ref == 'refs/heads/master' }}
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          files: |
+            *.pdf
