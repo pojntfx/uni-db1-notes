@@ -144,6 +144,15 @@ Wenn Abfragen über mehrere Tabellen gemacht werden, so müssen alle Abfragen fe
   - Right Outer Join: Links kann `NULL`-Werte haben
   - Full Outer Join: Beide könnten `NULL`-Werte haben
 
+## Weitere Joins
+
+- Builk Join (Kartesisches Produkt)
+- Restricted Join (mit zwei Where-Bedingungen)
+- Natural Join (min. ein Attribut gleich)
+- Semi Join (nur Attribute einer Tabelle im `select`-Statement)
+- Multiple Join (z.B. `join` aus drei Tabellen)
+- Auto Join (Tabelle mit sich selbst `join`en; z.B. Stückliste)
+
 ## Modellierung
 
 ### Abbildungsprozess
