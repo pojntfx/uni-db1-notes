@@ -349,4 +349,16 @@ begin
 end;
 ```
 
-- Hell (`><`)
+### Ort der Verdammnis
+
+> _menhir_
+
+Wenn einem der Syntax schon nicht kompliziert genug ist, dann darf man _vor_ das `declare`-Statement eines Triggers auch noch folgendes sinnloses Konstrukt packen und statt `:new` `:neu` schreiben:
+
+```sql
+referencing new as neu old as alt
+```
+
+Danach hat man auch fünf Zeilen. Und fünf Hirnzellen weniger.
+
+Wo wir schon dabei sind: Ist der sonst universelle Negations-Operator `!=` zu einfach? Zu simpel und zu verständlich? Wie wäre es mit `<>`; macht das genau selbe, ist aber komplizierter™!
