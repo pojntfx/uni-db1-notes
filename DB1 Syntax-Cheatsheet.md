@@ -175,9 +175,75 @@ delete from products
 where list_price > 69;
 ```
 
-### Additive Mengenoperationen
+### Unions
 
-- Additive Mengeoperationen (`in` etc.)
-- Multiplikative Mengenoperationen (`join` etc.)
+Gleiche Anzahl von Spalten, mehr Zeilen.
+
+```sql
+select
+    first_name,
+    last_name,
+    email,
+    'contact' as role
+from contacts
+union select
+    first_name,
+    last_name,
+    email,
+    'employee' as role
+from employees order by role
+```
+
+### Joins
+
+Mehr Spalten & mehr Zeilen
+
+#### Inner Join
+
+```sql
+select
+    a.id as id_a,
+    a.color as color_a,
+    b.id as id_b,
+    b.color as color_b
+from palette_a a
+inner join palette_b b using(color);
+```
+
+#### Left Outer Join
+
+```sql
+select
+    a.id as id_a,
+    a.color as color_a,
+    b.id as id_b,
+    b.color as color_b
+from palette_a a
+left outer join palette_b b using(color);
+```
+
+#### Right Outer Join
+
+```sql
+select
+    a.id as id_a,
+    a.color as color_a,
+    b.id as id_b, b.color as color_b
+from palette_a a
+right outer join palette_b b using(color);
+```
+
+#### Full Outer Join
+
+```sql
+select
+    a.id as id_a,
+    a.color as color_a,
+    b.id as id_b,
+    b.color as color_b
+from palette_a a
+full outer join palette_b b using(color);
+```
+
 - Trigger-Typen
 - Hell (`><`)
