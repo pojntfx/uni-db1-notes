@@ -8,7 +8,7 @@
 
 > "Come, let us go down and confuse their language so they will not understand each other" - Genesis 11:7, _Die Bibel_
 
-Mehr Details unter [https://github.com/pojntfx/uni-db1-notes](https://github.com/pojntfx/uni-db1-notes).
+Mehr Details unter [https://github.com/pojntfx/uni-db1-notes](https://github.com/pojntfx/uni-db1-notes). Dieses Dokument ist nur als Schnell-Übersicht gedacht.
 
 ## Data Definition Language
 
@@ -245,5 +245,108 @@ from palette_a a
 full outer join palette_b b using(color);
 ```
 
-- Trigger-Typen
+### Trigger
+
+#### Insert-Trigger
+
+`:old` ist nicht vorhanden.
+
+```sql
+create or replace trigger customers_credit_trigger
+    before insert of credit_limit
+    on customers
+declare
+    current_day number;
+begin
+    current_day := extract(day from sysdate);
+
+    if current_day between 28 and 31 then
+        raise_application_error(-20100, 'Locked at the end of the month');
+    end if;
+end;
+```
+
+#### Update-Trigger
+
+```sql
+create or replace trigger customers_credit_limit_trigger
+    before update of credit_limit
+    on customers
+    for each row
+    when (new.credit_limit > 0)
+begin
+    if :new.credit_limit >= 2*:old.credit_limit then
+        raise_application_error(-20101, 'The new credit cannot be more than double the old credit!');
+    end if;
+end;
+```
+
+#### Delete-Trigger
+
+`:new` ist nicht vorhanden.
+
+```sql
+create or replace trigger customers_audit_trigger
+    after delete
+    on customers
+    for each row
+declare
+    transaction_type varchar2(10);
+begin
+    transaction_type := case
+        when updating then 'update'
+        when deleting then 'delete'
+    end;
+
+    insert into audits(
+        table_name,
+        transaction_name,
+        by_user,
+        transaction_date
+    ) values (
+        'customers',
+        transaction_type,
+        user,
+        sysdate
+    );
+end;
+```
+
+#### Instead-Of-Trigger
+
+```sql
+create or replace trigger create_customer_trigger
+    instead of insert on customers_and_contacts
+    for each row
+declare
+    current_customer_id number;
+begin
+    insert into customers(
+        name,
+        address,
+        website,
+        credit_limit
+    ) values (
+        :new.name,
+        :new.address,
+        :new.website,
+        :new.credit_limit
+    ) returning customer_id into current_customer_id;
+
+    insert into contacts(
+        first_name,
+        last_name,
+        email,
+        phone,
+        customer_id
+    ) values (
+        :new.first_name,
+        :new.last_name,
+        :new.email,
+        :new.phone,
+        current_customer_id
+    );
+end;
+```
+
 - Hell (`><`)
