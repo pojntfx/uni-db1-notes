@@ -129,8 +129,54 @@ drop trigger customers_credit_trigger;
 
 ## Data Manipulation Language
 
-- Datentypen
-- Insert, Update, Delete
+### Datentypen
+
+- `CHAR|CHARACTER (size)`
+- `VARCHAR2 (size)`
+
+- `DATE`
+- `INTERVAL YEAR TO MONTH`
+- `INTERVAL DAY TO SECOND`
+
+- `INTEGER|INT`
+- `NUMBER (precision [, scale ])`
+- `FLOAT (precision)`
+
+### Zeilenoperationen
+
+#### Insert
+
+```sql
+insert into discounts(
+    discount_name,
+    amount,
+    start_date,
+    expired_date
+) values (
+    'Summer Promotion',
+    9.5,
+    date '2017-05-01',
+    date '2017-08-31'
+)
+```
+
+#### Update
+
+```sql
+update products
+set list_price = 420
+where list_price < 69;
+```
+
+#### Delete
+
+```sql
+delete from products
+where list_price > 69;
+```
+
+### Additive Mengenoperationen
+
 - Additive Mengeoperationen (`in` etc.)
 - Multiplikative Mengenoperationen (`join` etc.)
 - Trigger-Typen

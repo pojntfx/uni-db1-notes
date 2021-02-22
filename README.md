@@ -1,6 +1,6 @@
 # DB1 Notes
 
-![pandoc CI](https://github.com/pojntfx/uni-db1-notes/workflows/pandoc%20CI/badge.svg)
+[![pandoc CI](https://github.com/pojntfx/uni-db1-notes/actions/workflows/pandoc.yaml/badge.svg)](https://github.com/pojntfx/uni-db1-notes/actions/workflows/pandoc.yaml)
 
 My personal notes for the DB1 course at HdM Stuttgart. DB1 is an introduction to SQL and PL/SQL using the proprietary Oracle database.
 
