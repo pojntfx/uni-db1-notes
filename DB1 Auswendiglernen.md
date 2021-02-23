@@ -101,8 +101,8 @@ Log-Dateien sind ...
 
 ### Datenbank vs. Schema
 
-- Datenbank: Objekte zusammen **verwalten**
-- Schema: Objekte zusammen **betrachten**
+- Datenbank: Objekte zusammen von DBMS **verwaltet**
+- Schema: Objekte zusammen von DBMS **betrachtet**
 
 ### Verwendungszwecke für Views
 
@@ -210,12 +210,14 @@ Dabei wird nebenläufig kontinuierlich getestet.
 
 ### Grundsätze der Modellbildung
 
+SSRWKV:
+
 - Syntaktische & semantische Richtigkeit
+- Systematischer Aufbau
 - Relevanz
 - Wirtschaftlichkeit
 - Klarheit
 - Vergleichbarkeit
-- Systematischer Aufbau
 
 ### Anforderungsdokument
 
