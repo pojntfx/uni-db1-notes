@@ -160,7 +160,7 @@ Wenn Abfragen über mehrere Tabellen gemacht werden, so müssen alle Abfragen fe
   - Right Outer Join: Links kann `NULL`-Werte haben
   - Full Outer Join: Beide könnten `NULL`-Werte haben
 
-## Weitere Joins
+### Weitere Joins
 
 - Builk Join (Kartesisches Produkt)
 - Restricted Join (mit zwei Where-Bedingungen)
@@ -230,6 +230,14 @@ Die Struktur sollte folgendes Beinhalten
 - **Entität**: Gruppierungselement
 - **Beziehung**: Verknüpfung (`n:m`-Beziehungen via schwacher Entität)
 - **Kardinalität**: Maximale Anzahl an Elementen in Beziehung
+
+```plaintext
++-------------+                        +----------------------+
+|             |                        | |                  | |
+|   Entität   +----+ < Beziehung > +---+ | Schwache Entität | |
+|             |                        | |                  | |
++-------------+                        +----------------------+
+```
 
 ### Redundanz-Anomalien
 
