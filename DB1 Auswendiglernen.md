@@ -55,14 +55,16 @@ Admins:
 
 ### Services
 
-- Storage, Query & Manipulation of Data
-- Data Dictionary & System Dialog
-- Transactional Support
-- Multi-User Support
-- Recovery Service
-- Authorization Service
-- Access via Network
+SMARASTD:
+
 - Service to ensure Data Integrity
+- Multi-User Support
+- Authorization Service
+- Recovery Service
+- Access via Network
+- Storage, Query & Manipulation of Data
+- Transactional Support
+- Data Dictionary & System Dialog
 
 ### Metadaten
 
