@@ -20,6 +20,15 @@ Mehr Details unter [https://github.com/pojntfx/uni-db1-notes](https://github.com
 
 Applikation → DBMS → Datenbank
 
+### Erweitertes Programm-Modell
+
+- Präsentationsschicht (temporäre Daten)
+- Logik-Schicht (temporäre Daten)
+- Daten-Zugriffs-Schicht (temporäre Daten)
+- API zwischen App und DBMS
+- DBMS (persistente Daten)
+- Datenbank (persistente Daten)
+
 ### Definition DBMS
 
 - Sammelt Daten
