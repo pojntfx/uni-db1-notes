@@ -127,6 +127,27 @@ end;
 drop trigger customers_credit_trigger;
 ```
 
+#### Exceptions handlen
+
+```sql
+create trigger users_ensure_trigger
+    before update
+    on users
+    for each row
+declare
+    user_invalid exception;
+    pragma exception_init(user_invalid, -20555);
+begin
+    raise_application_error(-20555, 'User is invalid');
+
+    exception
+        when user_invalid then
+            dbms_output.put_line(sqlerrm);
+        when others then
+            dbms_output.put_line('Unexpected error: ' || sqlerrm);
+end;
+```
+
 ## Data Manipulation Language
 
 ### Datentypen
