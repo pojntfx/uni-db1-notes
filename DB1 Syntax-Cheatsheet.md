@@ -148,6 +148,59 @@ begin
 end;
 ```
 
+### Functions
+
+#### Function erstellen
+
+```sql
+create or replace function get_my_sum( a integer, b integer ) return integer
+is
+        multiplier number := 2;
+begin
+        return a + b * multiplier;
+end;
+```
+
+#### Function callen
+
+```sql
+select get_my_sum(1, 2) from dual;
+```
+
+#### Function löschen
+
+```sql
+drop function get_my_sum;
+```
+
+### Procedure
+
+#### Procedure erstellen
+
+```sql
+create or replace procedure get_sum ( a integer, b integer )
+is
+        multiplier number := 2;
+        result number := 0;
+begin
+        result := a + b * multiplier;
+
+        insert into results ( result ) values ( result );
+end;
+```
+
+#### Procedure callen
+
+```sql
+exec get_sum(1, 2);
+```
+
+#### Procedure löschen
+
+```sql
+drop procedure get_sum;
+```
+
 ## Data Manipulation Language
 
 ### Datentypen
