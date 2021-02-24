@@ -64,7 +64,7 @@ SMARASTD:
 - Access via Network
 - Storage, Query & Manipulation of Data
 - Transactional Support
-- Data Dictionary & System Dialog
+- Data Dictionary & System Catalog
 
 ### Metadaten
 

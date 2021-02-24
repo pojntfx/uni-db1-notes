@@ -47,7 +47,7 @@ alter table persons add ( phone varchar2(20), email varchar2(100) )
 #### Spalten bearbeiten
 
 ```sql
-alter table persons modify birthdate date null;
+alter table persons modify ( birthdate date null, email varchar2(255) );
 ```
 
 #### Spalten löschen
