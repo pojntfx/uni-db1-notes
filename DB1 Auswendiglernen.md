@@ -13,8 +13,8 @@ Mehr Details unter [https://github.com/pojntfx/uni-db1-notes](https://github.com
 
 ### Typen von Daten
 
-- Persistent: Über mehrere Programabläufe verfügbar
-- Temporär: Nur während der Laufzeit verfügbar
+- **Persistent**: Über mehrere Programabläufe verfügbar
+- **Temporär**: Nur während der Laufzeit verfügbar
 
 ### Programmaufbau
 
@@ -73,7 +73,7 @@ SMARASTD:
 
 ### Interne Dateistruktur
 
-- $n$ Datendateien (`n = 1...MAXDATAFILES`)
+- $n$ Datendateien ($n = 1...MAXDATAFILES$)
 - Control-Files
 - Logfiles
 
@@ -106,7 +106,7 @@ Log-Dateien sind ...
 
 ### Verwendungszwecke für Views
 
-- Trennung der Anwendungsschicht vom Unternehmensmodell (ja, jede Datenbank stellt ein Unternehmen dar, werter menhir)
+- Trennung der Anwendungsschicht vom Unternehmensmodell (menhir)
 - Sicherheit
 - Zugriffsstrukturen
 - Vereinfachte Schemaevolutionen
@@ -120,8 +120,8 @@ Log-Dateien sind ...
 
 Ein Key is eine Menge von Spalten.
 
-- Eindeutigkeit: Es gibt keine zwei Zeilen mit demselben Candidate Key
-- Irreduzibilität: Nimmt man eine oder mehrere Spalten aus dem Key, so ist dieser nichtmehr eindeutig.
+- **Eindeutigkeit**: Es gibt keine zwei Zeilen mit demselben Candidate Key
+- **Irreduzibilität**: Nimmt man eine oder mehrere Spalten aus dem Key, so ist dieser nichtmehr eindeutig.
 
 ### Definition Primary Key
 
@@ -146,30 +146,30 @@ Der Foreign Key, welcher B aus A referenziert, ist ein Candidate Key von B (meis
 
 Bei einer Erweiterung des Modells dürfen bestehende Daten nicht ungültig werden.
 
-- `ALTER TABLE`: Neue Spalte einfügen
-- `UPDATE`: Default-Werte für alte Zeilen einfügen (falls `NOT NULL`)
-- `INSERT`: Fehlende Zeilen anlegen (falls `NOT NULL`)
-- `ALTER TABLE`: Foreign Key-Constraint hinzufügen
-- `ALTER TABLE`: `NOT NULL`-Constraint hinzufügen
+- `alter table`: Neue Spalte einfügen
+- `update`: Default-Werte für alte Zeilen einfügen (falls `not null`)
+- `insert`: Fehlende Zeilen anlegen (falls `not null`)
+- `alter table`: Foreign Key-Constraint hinzufügen
+- `alter table`: `not null`-Constraint hinzufügen
 
 ## Mengenoperationen
 
 ### Typen von Multi-Tabellen-Abfragen:
 
-- Additive Mengenoperationen: Mehrere Teilabfragen (`in` etc.)
-- Multiplikative Mengenoperationen: Kartesisches Produkt (`join` etc.)
+- **Additive** Mengenoperationen: Mehrere Teilabfragen (`in` etc.)
+- **Multiplikative** Mengenoperationen: Kartesisches Produkt (`join` etc.)
 
 ### Optimierung von Additiven Mengenoperationen
 
-Wenn Abfragen über mehrere Tabellen gemacht werden, so müssen alle Abfragen fertig sein, damit verglichen werden kann. Deshalb `UNION ALL` verwenden (Vorsicht: Duplikate werden nicht entfert!)
+Wenn Abfragen über mehrere Tabellen gemacht werden, so müssen alle Abfragen fertig sein, damit verglichen werden kann. Deshalb `union all` verwenden (Vorsicht: Duplikate werden nicht entfert!)
 
 ### Inner- vs Outer-Join
 
-- Inner Join: Zeilen in linker Tabelle, für welche in der rechten Tabelle keine entsprechenden Zeilen existieren, werden nicht dargestellt.
-- Outer Join `(+)`: Zeilen in Tabelle A, für welche in Tabelle B keine entsprechende Zielen existieren, werden mit `NULL` gefüllt.
-  - Left Outer Join: Rechts kann `NULL`-Werte haben
-  - Right Outer Join: Links kann `NULL`-Werte haben
-  - Full Outer Join: Beide könnten `NULL`-Werte haben
+- **Inner Join**: Zeilen in linker Tabelle, für welche in der rechten Tabelle keine entsprechenden Zeilen existieren, werden nicht dargestellt.
+- **Outer Join** `(+)`: Zeilen in Tabelle A, für welche in Tabelle B keine entsprechende Zielen existieren, werden mit `null` gefüllt.
+  - **Left Outer Join**: Rechts kann `null`-Werte haben
+  - **Right Outer Join**: Links kann `null`-Werte haben
+  - **Full Outer Join**: Beide könnten `null`-Werte haben
 
 ### Weitere Joins
 
@@ -195,15 +195,15 @@ Dabei wird nebenläufig kontinuierlich getestet.
 
 ### Abbildungsprozess
 
-- Realwelt
+- **Realwelt**
   - Vielschichtig
   - Unikate
   - Umfangreiche Beziehungen
-- Semantisches Datenmodell
+- **Semantisches Datenmodell**
   - Zusammenfassung zu Gruppen, abstrahiert
   - Integritätsbedingungen
   - Explizit modellierte Beziehungen
-- Relationales Datenbankmodell
+- **Relationales Datenbankmodell**
   - Einfach
   - Tabellen
   - Implizit modellierte Beziehungen
@@ -221,16 +221,15 @@ SSRWKV:
 
 ### Anforderungsdokument
 
-Und jetzt, ein paar positive Adjektive (man darf sich schon auf BWL freuen) ... bzw. die "Wünschenswerten Eigenschaften von Anforderungsdokumenten":
+Ein gutes Anforderungsdokument sollte die Eigenschaften haben ...
 
 - Korrektheit
 - Vollständigkeit
 - Konsistenz
 - Einfachkeit
 - Eindeutig
-- In Arial 11 Punkt und mit angehängtem Quellcode als Adobe™ Reader® 9000 lesbare PDF (duh!)
 
-Die Struktur sollte folgendes Beinhalten
+Ein gutes Anforderungselement sollte bestehen aus ...
 
 - Informationsanforderungen
 - Bearbeitungsanforderungen
@@ -278,7 +277,7 @@ Folgende Anomalien treten durch Redundanzen auf:
 #### Problemfelder von Indizes
 
 - Im temporären Speichern funktionieren Indizes nicht mehr
-- Falsche Anwendung von Indizes kann sogar langsamer als keine Indizes sein. Ohne Indizes werden immer alle Zeilen einer Tabelle evaluiert; bei Indizes wird immer von einer Position ausgehend, bis die `where`-Clause eintritt, evaluiert. Letztere Strategie besitzt damit auch einen Overhead, welcher teuerer als die Ersparnis durch das Abbrechen nach dem Eintreten der `where`-Clause sein kann.
+- Falsche Anwendung von Indizes kann sogar langsamer als keine Indizes sein. Ohne Indizes werden immer alle Zeilen einer Tabelle evaluiert; bei Indizes wird immer von einer Position ausgehend, bis die `where`-Clause eintritt, evaluiert. Letztere Strategie besitzt damit auch einen Overhead, welcher teuerer als die Ersparnis durch das frühere Abbrechen nach dem Eintreten der `where`-Clause sein kann.
 
 #### Spaltenwahl für Indizes
 
@@ -296,8 +295,8 @@ $distinct(n)$: Anzahl von eindeutigen Elementen
 
 Nutzt eine Allowlist.
 
-- **Objektprivilegien**: Regelt Zugriff
-- **Systemprivilegien**: Regelt Nutzung
+- Beschränkung von Nomen (i.e. "Nutzer x darf auf Tabelle `products` zugreifen"): **Objektprivilegien**
+- Beschränkung von Prädikaten (i.e. "Nutzer x darf `insert`en): **Systemprivilegien**
 
 ### Mehrnutzerbetrieb
 
@@ -309,7 +308,7 @@ Nutzt eine Allowlist.
 
 ### Zuverlässigkeit
 
-Daten dürfen weder physisch noch semantisch fehlerhaft sein.
+Daten dürfen weder physisch noch semantisch fehlerhaft sein, weshalb folgende Dinge existieren müssen:
 
 - Transaktionen
 - Virtueller Single-User-Betrieb
@@ -325,29 +324,29 @@ Aktionen werden entweder vollständig oder gar nicht ausgeführt.
 
 ### Transaktionskontrolle
 
-- `BEGIN`: Start einer Transaktion (SQL: Nicht definiert)
-- `END`: Ende einer Transaktionen (SQL: `COMMIT`)
-- `UNDO`: Verwerfen offener Transaktionen (SQL: `ROLLBACK`)
-- `REDO`: Wiederherstellung abgeschlossener Transaktionen (SQL: Nicht definiert)
-- `SAVEPOINT`: Sub-Transaktionen (SQL only)
+- `begin`: Start einer Transaktion (SQL: Nicht definiert)
+- `end`: Ende einer Transaktionen (SQL: `commit`)
+- `undo`: Verwerfen offener Transaktionen (SQL: `rollback`)
+- `redo`: Wiederherstellung abgeschlossener Transaktionen (SQL: Nicht definiert)
+- `savepoint`: Sub-Transaktionen (SQL only)
 
 ### Konsistenzsicherung
 
-- Constraints: In Tabellen
-- Transaktionen: In Ablaufebene
-- Trigger: In Prozedualen Erweiterungen
+- **Constraints**: In Tabellen
+- **Transaktionen**: In Ablaufebene
+- **Trigger**: In Prozedualen Erweiterungen
 
 ### Parallelitätssteuerung
 
 Verhindern von ...
 
-- Lost Update: Verlorengegangenen Änderungen
-- Dirty Read/Write: Zugriff auf "schmutzige" Daten
+- **Lost Update**: Verlorengegangenen Änderungen
+- **Dirty Read/Write**: Zugriff auf "schmutzige" Daten
 
 Umsetzung durch ...
 
-- **Funktionale Sperr-Ebene**: Schreib-, Sperr- und Exklusiv-Sperren
-- **Physische Sperr-Ebene**: Table-, Page- und Row-Level-Sperren
+- Schreib-, Sperr- und Exklusiv-Sperren (**Funktionale Sperr-Ebene**)
+- Table-, Page- und Row-Level-Sperren (**Physische Sperr-Ebene**)
 
 → Z.B. durch `select ... for update of ...`
 
@@ -359,8 +358,8 @@ Umsetzung durch ...
 
 ### Impedance Mismatch
 
-- `TOO_MANY_ROWS`: Mehr als ein Datensatz
-- `NO_DATA_FOUND`: Null Datensätze (nicht streng genommen ein Impendance Mismatch)
+- `too_many_rows`: Mehr als ein Datensatz
+- `no_data_found`: Null Datensätze (nicht streng genommen ein Impendance Mismatch)
 
 ### Definition Cursor
 
