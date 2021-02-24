@@ -399,6 +399,7 @@ select product_name as "Product Name", list_price - standard_cost as "Gross Prof
 
 ### Helper Functions
 
+- You can extract substrings with `substr`: `select substr('Alex', 1, 1) from dual;`
 - Stuff like `select upper('uwu') from dual` can come in handy.
 - Using `round` it is possible to round numbers (returns 5.23):
 
