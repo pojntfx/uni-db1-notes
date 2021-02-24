@@ -138,11 +138,11 @@ declare
     user_invalid exception;
     pragma exception_init(user_invalid, -20555);
 begin
-    raise_application_error(-20555, 'User is invalid');
+    raise user_invalid;
 
     exception
         when user_invalid then
-            dbms_output.put_line(sqlerrm);
+            raise_application_error(-20555, 'User is invalid');
         when others then
             dbms_output.put_line('Unexpected error: ' || sqlerrm);
 end;
