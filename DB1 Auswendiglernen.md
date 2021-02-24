@@ -296,7 +296,7 @@ $distinct(n)$: Anzahl von eindeutigen Elementen
 Nutzt eine Allowlist.
 
 - Beschränkung von Nomen (i.e. "Nutzer x darf auf Tabelle `products` zugreifen"): **Objektprivilegien**
-- Beschränkung von Prädikaten (i.e. "Nutzer x darf `insert`en): **Systemprivilegien**
+- Beschränkung von Prädikaten (i.e. "Nutzer x darf `updaten`en"): **Systemprivilegien**
 
 ### Mehrnutzerbetrieb
 
@@ -345,7 +345,7 @@ Verhindern von ...
 
 Umsetzung durch ...
 
-- Schreib-, Sperr- und Exklusiv-Sperren (**Funktionale Sperr-Ebene**)
+- Lese-, Schreib- und Exklusiv-Sperren (**Funktionale Sperr-Ebene**)
 - Table-, Page- und Row-Level-Sperren (**Physische Sperr-Ebene**)
 
 → Z.B. durch `select ... for update of ...`
