@@ -1,0 +1,327 @@
+<h1 id="db1-auswendiglernen">DB1 Auswendiglernen</h1>
+<blockquote>
+<p>“The true courage is to admit that the light at the end of the tunnel is probably the headlight of another train approaching” - Slavoj Žižek, <em>The Courage of Hopelessness</em></p>
+</blockquote>
+<p>Mehr Details unter <a href="https://github.com/pojntfx/uni-db1-notes">https://github.com/pojntfx/uni-db1-notes</a>.</p>
+<h2 id="aufbau-eines-dbms">Aufbau eines DBMS</h2>
+<h3 id="typen-von-daten">Typen von Daten</h3>
+<ul>
+<li><strong>Persistent</strong>: Über mehrere Programabläufe verfügbar</li>
+<li><strong>Temporär</strong>: Nur während der Laufzeit verfügbar</li>
+</ul>
+<h3 id="programmaufbau">Programmaufbau</h3>
+<p>Applikation → DBMS → Datenbank</p>
+<h3 id="erweitertes-programm-modell">Erweitertes Programm-Modell</h3>
+<ul>
+<li>Präsentationsschicht (temporäre Daten)</li>
+<li>Logik-Schicht (temporäre Daten)</li>
+<li>Daten-Zugriffs-Schicht (temporäre Daten)</li>
+<li>API zwischen App und DBMS</li>
+<li>DBMS (persistente Daten)</li>
+<li>Datenbank (persistente Daten)</li>
+</ul>
+<h3 id="definition-dbms">Definition DBMS</h3>
+<ul>
+<li>Sammelt Daten</li>
+<li>Verwaltet Daten</li>
+<li>Definitiert Struktur (Modell)</li>
+<li>Definition, Manipulation &amp; Abfrage von Daten</li>
+<li>Services</li>
+</ul>
+<h3 id="effizienz-typen">Effizienz-Typen</h3>
+<p>Entwickler:</p>
+<ul>
+<li>Effiziente Modellierung</li>
+<li>Einfache Sprache</li>
+<li>Gutes Tooling</li>
+</ul>
+<p>Admins:</p>
+<ul>
+<li>Effiziente Ressourcennutzung</li>
+<li>Einbindung in Systemverwaltung</li>
+<li>Monitoring</li>
+<li>Anpassung</li>
+<li>Zugriffssteuerung</li>
+</ul>
+<h3 id="services">Services</h3>
+<p>SMARASTD:</p>
+<ul>
+<li>Service to ensure Data Integrity</li>
+<li>Multi-User Support</li>
+<li>Authorization Service</li>
+<li>Recovery Service</li>
+<li>Access via Network</li>
+<li>Storage, Query &amp; Manipulation of Data</li>
+<li>Transactional Support</li>
+<li>Data Dictionary &amp; System Catalog</li>
+</ul>
+<h3 id="metadaten">Metadaten</h3>
+<ul>
+<li><strong>Data Dictionary</strong>: Metadaten der DB-Objekte</li>
+<li><strong>System Catalog</strong>: Status und Konfiguration</li>
+</ul>
+<h3 id="interne-dateistruktur">Interne Dateistruktur</h3>
+<ul>
+<li><span class="math inline"><em>n</em></span> Datendateien (<span class="math inline"><em>n</em> = 1...<em>M</em><em>A</em><em>X</em><em>D</em><em>A</em><em>T</em><em>A</em><em>F</em><em>I</em><em>L</em><em>E</em><em>S</em></span>)</li>
+<li>Control-Files</li>
+<li>Logfiles</li>
+</ul>
+<h3 id="hintergrundprozesse">Hintergrundprozesse</h3>
+<ul>
+<li><strong>DBWR</strong> (Database Write-Prozess): Lesen &amp; Schreiben auf Daten-Dateien</li>
+<li><strong>LGWR</strong> (Log Write-Prozess): Logging aller Veränderungen</li>
+<li><strong>PMON</strong> (Process-Monitor): Garbage Collector; führt in konsistenten Zustand nach Abbruch von z.B. einer Transaktion</li>
+<li><strong>SMON</strong> (System-Monitor): Consistency Check; führt in konsistenten Zustand nach Crash von DBMS, OS oder Hardware</li>
+<li><strong>ARCH</strong> (Archiv-Prozess): Archivierung von Daten</li>
+</ul>
+<h3 id="logging">Logging</h3>
+<p>Notwendig für …</p>
+<ul>
+<li>Konsistenz</li>
+<li>Wiederherstellbarkeit</li>
+</ul>
+<p>Log-Dateien sind …</p>
+<ul>
+<li>Groß: Ineffizienter Zugriff</li>
+<li>Wichtig: Verlust muss vermieden werden</li>
+</ul>
+<p>→ Round-Robin-Prozess mit Archiv-Prozess</p>
+<h3 id="datenbank-vs.-schema">Datenbank vs. Schema</h3>
+<ul>
+<li>Datenbank: Objekte zusammen von DBMS <strong>verwaltet</strong></li>
+<li>Schema: Objekte zusammen von DBMS <strong>betrachtet</strong></li>
+</ul>
+<h3 id="verwendungszwecke-für-views">Verwendungszwecke für Views</h3>
+<ul>
+<li>Trennung der Anwendungsschicht vom Unternehmensmodell (menhir)</li>
+<li>Sicherheit</li>
+<li>Zugriffsstrukturen</li>
+<li>Vereinfachte Schemaevolutionen</li>
+<li>Einfügen und Löschen einschränken</li>
+</ul>
+<p>→ Am besten immer nur via Views auf Daten zugreifen</p>
+<h2 id="keys">Keys</h2>
+<h3 id="definition-candidate-key">Definition Candidate Key</h3>
+<p>Ein Key is eine Menge von Spalten.</p>
+<ul>
+<li><strong>Eindeutigkeit</strong>: Es gibt keine zwei Zeilen mit demselben Candidate Key</li>
+<li><strong>Irreduzibilität</strong>: Nimmt man eine oder mehrere Spalten aus dem Key, so ist dieser nichtmehr eindeutig.</li>
+</ul>
+<h3 id="definition-primary-key">Definition Primary Key</h3>
+<p>Ein gewählter Candidate Key (oft der mit der kleinsten Anzahl von Spalten).</p>
+<h3 id="definition-foreign-key">Definition Foreign Key</h3>
+<p>Es werden zwei Tabellen A und B betrachtet.</p>
+<p>Der Foreign Key, welcher B aus A referenziert, ist ein Candidate Key von B (meist der Primary Key).</p>
+<h2 id="skripte">Skripte</h2>
+<h3 id="restartfähige-skripte">Restartfähige Skripte</h3>
+<ol type="1">
+<li>Löschen Constraints</li>
+<li>Löschen Objekte</li>
+<li>Anlegen Objekte</li>
+<li>Anlegen Constraints</li>
+</ol>
+<h3 id="delta-skripte">Delta-Skripte</h3>
+<p>Bei einer Erweiterung des Modells dürfen bestehende Daten nicht ungültig werden.</p>
+<ul>
+<li><code>alter table</code>: Neue Spalte einfügen</li>
+<li><code>update</code>: Default-Werte für alte Zeilen einfügen (falls <code>not null</code>)</li>
+<li><code>insert</code>: Fehlende Zeilen anlegen (falls <code>not null</code>)</li>
+<li><code>alter table</code>: Foreign Key-Constraint hinzufügen</li>
+<li><code>alter table</code>: <code>not null</code>-Constraint hinzufügen</li>
+</ul>
+<h2 id="mengenoperationen">Mengenoperationen</h2>
+<h3 id="typen-von-multi-tabellen-abfragen">Typen von Multi-Tabellen-Abfragen:</h3>
+<ul>
+<li><strong>Additive</strong> Mengenoperationen: Mehrere Teilabfragen (<code>in</code> etc.)</li>
+<li><strong>Multiplikative</strong> Mengenoperationen: Kartesisches Produkt (<code>join</code> etc.)</li>
+</ul>
+<h3 id="optimierung-von-additiven-mengenoperationen">Optimierung von Additiven Mengenoperationen</h3>
+<p>Wenn Abfragen über mehrere Tabellen gemacht werden, so müssen alle Abfragen fertig sein, damit verglichen werden kann. Deshalb <code>union all</code> verwenden (Vorsicht: Duplikate werden nicht entfert!)</p>
+<h3 id="inner--vs-outer-join">Inner- vs Outer-Join</h3>
+<ul>
+<li><strong>Inner Join</strong>: Zeilen in linker Tabelle, für welche in der rechten Tabelle keine entsprechenden Zeilen existieren, werden nicht dargestellt.</li>
+<li><strong>Outer Join</strong> <code>(+)</code>: Zeilen in Tabelle A, für welche in Tabelle B keine entsprechende Zielen existieren, werden mit <code>null</code> gefüllt.
+<ul>
+<li><strong>Left Outer Join</strong>: Rechts kann <code>null</code>-Werte haben</li>
+<li><strong>Right Outer Join</strong>: Links kann <code>null</code>-Werte haben</li>
+<li><strong>Full Outer Join</strong>: Beide könnten <code>null</code>-Werte haben</li>
+</ul></li>
+</ul>
+<h3 id="weitere-joins">Weitere Joins</h3>
+<ul>
+<li>Builk Join (Kartesisches Produkt)</li>
+<li>Restricted Join (mit zwei Where-Bedingungen)</li>
+<li>Natural Join (min. ein Attribut gleich)</li>
+<li>Semi Join (nur Attribute einer Tabelle im <code>select</code>-Statement)</li>
+<li>Multiple Join (z.B. <code>join</code> aus drei Tabellen)</li>
+<li>Auto Join (Tabelle mit sich selbst <code>join</code>en; z.B. Stückliste)</li>
+</ul>
+<h2 id="modellierung">Modellierung</h2>
+<h3 id="datenbankentwurfsablauf">Datenbankentwurfsablauf</h3>
+<ol type="1">
+<li><strong>Input:</strong> Reale Welt</li>
+<li>Anforderungen analysieren</li>
+<li>Entwurf (konzeptionell) erstellen</li>
+<li>Entwurf (logischen) erstellen</li>
+<li>Implementieren</li>
+<li><strong>Output</strong>: System</li>
+</ol>
+<p>Dabei wird nebenläufig kontinuierlich getestet.</p>
+<h3 id="abbildungsprozess">Abbildungsprozess</h3>
+<ul>
+<li><strong>Realwelt</strong>
+<ul>
+<li>Vielschichtig</li>
+<li>Unikate</li>
+<li>Umfangreiche Beziehungen</li>
+</ul></li>
+<li><strong>Semantisches Datenmodell</strong>
+<ul>
+<li>Zusammenfassung zu Gruppen, abstrahiert</li>
+<li>Integritätsbedingungen</li>
+<li>Explizit modellierte Beziehungen</li>
+</ul></li>
+<li><strong>Relationales Datenbankmodell</strong>
+<ul>
+<li>Einfach</li>
+<li>Tabellen</li>
+<li>Implizit modellierte Beziehungen</li>
+</ul></li>
+</ul>
+<h3 id="grundsätze-der-modellbildung">Grundsätze der Modellbildung</h3>
+<p>SSRWKV:</p>
+<ul>
+<li>Syntaktische &amp; semantische Richtigkeit</li>
+<li>Systematischer Aufbau</li>
+<li>Relevanz</li>
+<li>Wirtschaftlichkeit</li>
+<li>Klarheit</li>
+<li>Vergleichbarkeit</li>
+</ul>
+<h3 id="anforderungsdokument">Anforderungsdokument</h3>
+<p>Ein gutes Anforderungsdokument sollte die Eigenschaften haben …</p>
+<ul>
+<li>Korrektheit</li>
+<li>Vollständigkeit</li>
+<li>Konsistenz</li>
+<li>Einfachkeit</li>
+<li>Eindeutig</li>
+</ul>
+<p>Ein gutes Anforderungselement sollte bestehen aus …</p>
+<ul>
+<li>Informationsanforderungen</li>
+<li>Bearbeitungsanforderungen</li>
+<li>Funktionale Anforderungen</li>
+<li>Dynamische Anforderungen</li>
+</ul>
+<h3 id="er-modell">ER-Modell</h3>
+<ul>
+<li><strong>Atribut</strong>: Datenelement</li>
+<li><strong>Entität</strong>: Gruppierungselement</li>
+<li><strong>Beziehung</strong>: Verknüpfung (<code>n:m</code>-Beziehungen via schwacher Entität)</li>
+<li><strong>Kardinalität</strong>: Maximale Anzahl an Elementen in Beziehung</li>
+</ul>
+<pre class="plaintext"><code>+-------------+                        +----------------------+
+|             |                        | |                  | |
+|   Entität   +----+ &lt; Beziehung &gt; +---+ | Schwache Entität | |
+|             |                        | |                  | |
++-------------+                        +----------------------+</code></pre>
+<h3 id="redundanz-anomalien">Redundanz-Anomalien</h3>
+<p>Folgende Anomalien treten durch Redundanzen auf:</p>
+<ul>
+<li>Änderungsanomalie</li>
+<li>Löschanomalie</li>
+<li>Einfügeanomalie</li>
+</ul>
+<h3 id="normalformen">Normalformen</h3>
+<ul>
+<li><strong>Erste Normalform</strong>: Spalten sind nicht weiter auftrennbar</li>
+<li><strong>Zweite Normalform</strong>: Alle Attribute hängen vom Schlüssel ab (keine funktionalen Abhängigkeiten)</li>
+<li><strong>Dritte Normalform</strong>: Beziehungen werden über Foreign Key-Constraints abgebildet (keine transitiven Abhängkeiten)</li>
+</ul>
+<h3 id="ablauf-des-schemaentwurfs">Ablauf des Schemaentwurfs</h3>
+<ol type="1">
+<li>Erheben von Infos</li>
+<li>Identifikation der Attribute</li>
+<li>Formalisierung von Infos</li>
+<li>Gruppierung der Attribute</li>
+</ol>
+<h3 id="indizierung">Indizierung</h3>
+<h4 id="problemfelder-von-indizes">Problemfelder von Indizes</h4>
+<ul>
+<li>Im temporären Speichern funktionieren Indizes nicht mehr</li>
+<li>Falsche Anwendung von Indizes kann sogar langsamer als keine Indizes sein. Ohne Indizes werden immer alle Zeilen einer Tabelle evaluiert; bei Indizes wird immer von einer Position ausgehend, bis die <code>where</code>-Clause eintritt, evaluiert. Letztere Strategie besitzt damit auch einen Overhead, welcher teuerer als die Ersparnis durch das frühere Abbrechen nach dem Eintreten der <code>where</code>-Clause sein kann.</li>
+</ul>
+<h4 id="spaltenwahl-für-indizes">Spaltenwahl für Indizes</h4>
+<p>Bei der Erstellung eines Indexes sollte immer die Spalte mit der höchsten Selektivität (<span class="math inline"> &gt; 0, 8</span>) zuerst angeben werden, welche sich mit folgender Formel berechnen lässt:</p>
+<p><span class="math inline">$Selektivität = 1 - \frac{n - distinct(n)}{n}$</span></p>
+<p><span class="math inline"><em>n</em></span>: Anzahl von Elementen</p>
+<p><span class="math inline"><em>d</em><em>i</em><em>s</em><em>t</em><em>i</em><em>n</em><em>c</em><em>t</em>(<em>n</em>)</span>: Anzahl von eindeutigen Elementen</p>
+<h2 id="weitere-services">Weitere Services</h2>
+<h3 id="authorisierungsdienst">Authorisierungsdienst</h3>
+<p>Nutzt eine Allowlist.</p>
+<ul>
+<li>Beschränkung von Nomen (i.e. “Nutzer x darf auf Tabelle <code>products</code> zugreifen”): <strong>Objektprivilegien</strong></li>
+<li>Beschränkung von Prädikaten (i.e. “Nutzer x darf <code>updaten</code>en”): <strong>Systemprivilegien</strong></li>
+</ul>
+<h3 id="mehrnutzerbetrieb">Mehrnutzerbetrieb</h3>
+<ul>
+<li>Sichtbarkeit von Daten</li>
+<li>Änderbarkeit von Daten</li>
+<li>Trennung in Anwender und Admins</li>
+<li>Schonung von Ressources</li>
+<li>Einfache Verwaltung</li>
+</ul>
+<h3 id="zuverlässigkeit">Zuverlässigkeit</h3>
+<p>Daten dürfen weder physisch noch semantisch fehlerhaft sein, weshalb folgende Dinge existieren müssen:</p>
+<ul>
+<li>Transaktionen</li>
+<li>Virtueller Single-User-Betrieb</li>
+</ul>
+<h3 id="transaktionenacid">Transaktionen/ACID</h3>
+<p>Aktionen werden entweder vollständig oder gar nicht ausgeführt.</p>
+<ul>
+<li><strong>A</strong>tomicy: Alles oder nichts</li>
+<li><strong>C</strong>onsistency: Zustand 1 → Zustand 2 (Unterbrechung: Zustand 2 = Zustand 1)</li>
+<li><strong>I</strong>solation: Virtueller Single-User-Betrieb</li>
+<li><strong>D</strong>urability: Zustand 2 bleibt erhalten, egal was passiert</li>
+</ul>
+<h3 id="transaktionskontrolle">Transaktionskontrolle</h3>
+<ul>
+<li><code>begin</code>: Start einer Transaktion (SQL: Nicht definiert)</li>
+<li><code>end</code>: Ende einer Transaktionen (SQL: <code>commit</code>)</li>
+<li><code>undo</code>: Verwerfen offener Transaktionen (SQL: <code>rollback</code>)</li>
+<li><code>redo</code>: Wiederherstellung abgeschlossener Transaktionen (SQL: Nicht definiert)</li>
+<li><code>savepoint</code>: Sub-Transaktionen (SQL only)</li>
+</ul>
+<h3 id="konsistenzsicherung">Konsistenzsicherung</h3>
+<ul>
+<li><strong>Constraints</strong>: In Tabellen</li>
+<li><strong>Transaktionen</strong>: In Ablaufebene</li>
+<li><strong>Trigger</strong>: In Prozedualen Erweiterungen</li>
+</ul>
+<h3 id="parallelitätssteuerung">Parallelitätssteuerung</h3>
+<p>Verhindern von …</p>
+<ul>
+<li><strong>Lost Update</strong>: Verlorengegangenen Änderungen</li>
+<li><strong>Dirty Read/Write</strong>: Zugriff auf “schmutzige” Daten</li>
+</ul>
+<p>Umsetzung durch …</p>
+<ul>
+<li>Lese-, Schreib- und Exklusiv-Sperren (<strong>Funktionale Sperr-Ebene</strong>)</li>
+<li>Table-, Page- und Row-Level-Sperren (<strong>Physische Sperr-Ebene</strong>)</li>
+</ul>
+<p>→ Z.B. durch <code>select ... for update of ...</code></p>
+<h3 id="möglichkeiten-der-einbindung">Möglichkeiten der Einbindung</h3>
+<ul>
+<li>Low Code-Umgebungen (z.B. LibreOffice Base, IFTTT)</li>
+<li>Embedding</li>
+<li>APIs</li>
+</ul>
+<h3 id="impedance-mismatch">Impedance Mismatch</h3>
+<ul>
+<li><code>too_many_rows</code>: Mehr als ein Datensatz</li>
+<li><code>no_data_found</code>: Null Datensätze (nicht streng genommen ein Impendance Mismatch)</li>
+</ul>
+<h3 id="definition-cursor">Definition Cursor</h3>
+<p>Ergebnis einer Abfrage wird in einer Tabelle abgelegt, von welcher dann <span class="math inline"><em>n</em></span>-mal gefetched werden kann.</p>
