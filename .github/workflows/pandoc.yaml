@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Compile PDFs
-        run: ./compile.sh
+        run: make
       - name: Publish PDFs to GitHub releases
         if: ${{ github.ref == 'refs/heads/main' }}
         uses: marvinpinto/action-automatic-releases@latest
@@ -18,4 +18,12 @@ jobs:
           automatic_release_tag: "latest"
           prerelease: false
           files: |
-            *.pdf
+            out/release/all.zip
+      - name: Publish HTML to GitHub pages
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: out/docs
+          git-config-name: GitHub Pages Bot
+          git-config-email: bot@example.com
