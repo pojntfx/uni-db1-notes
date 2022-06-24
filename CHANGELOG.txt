@@ -1,0 +1,377 @@
+commit 6d2029052c75d9b429757d7ba20fece2792186ac
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Jun 24 18:35:59 2022 +0200
+
+    build: Port to Deliverance
+
+commit 87b243c98db2422681a99002c6c8acf8dea5069e
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Tue Jun 29 14:21:19 2021 +0000
+
+    chore: Bump build system
+
+commit 9887fe493d3b0319a569e3c32832d9116c066e13
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Tue Jun 29 14:00:16 2021 +0000
+
+    chore: Bump build system
+
+commit 39956da0fc1dc3fee21686134e2c4ff5fabac95c
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Sat Jun 26 08:24:54 2021 +0000
+
+    chore: Bump build system
+
+commit 3c5269011d69e467d1c1fa9977b9d6c6468f68fa
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Tue Jun 22 17:20:10 2021 +0000
+
+    chore: Bump build system
+
+commit d38e00607794e7fba7016cc87747d6cd77302ebd
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Jun 7 19:23:01 2021 +0000
+
+    refactor: Use new project structure
+
+commit 2fe59724f76328a737790826b32f3bfccac41fd6
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Feb 24 21:30:26 2021 +0100
+
+    fix: Correct typo
+
+commit a9f61d2e895f9ad836880515688f4a6f297377a7
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Feb 24 18:30:36 2021 +0100
+
+    feat: Add multi-row modify command
+
+commit 9af7753513f40f2b672429d186314f88777d7c2d
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Feb 24 12:36:29 2021 +0100
+
+    feat: Add short function and procedure docs
+
+commit 1fb95e9fe6ebaa6b64df8f04153d6a9ed8c3cd36
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Feb 24 12:13:08 2021 +0100
+
+    refactor: Add substr and exception docs
+
+commit f3e39fcd0e94531424c21e294719a31f71b2851a
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Feb 24 11:53:01 2021 +0100
+
+    feat: Add exception handling docs
+
+commit 60aa6097e847983ab9e243d478ddcc608da65772
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Feb 24 10:54:54 2021 +0100
+
+    refactor: Improve formatting for DB1 Auswendiglernen
+
+commit 193b7066825f663bb8548132b35e42940a085f00
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Tue Feb 23 14:29:33 2021 +0100
+
+    feat: Clarify schema and database distinction
+
+commit 8d60f9f15447cdc472edbc958160af42851e23f9
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Tue Feb 23 13:41:22 2021 +0100
+
+    feat: Add acryonym for services
+
+commit a011c87a80e46f85289c5a59f5648faa985a0048
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Tue Feb 23 13:27:40 2021 +0100
+
+    feat: Add advanced program model
+
+commit e7f5ac5c2a807dda18e75271aeb259447f99f6b1
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Tue Feb 23 12:16:51 2021 +0100
+
+    feat: Add notes on basic ER syntax
+
+commit 89628378d0bdc6ab0ca614f702312c61b3e09993
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 22:28:31 2021 +0100
+
+    feat: Expand on indexes and modelling
+
+commit 01c5abcae33b66d666ec7e380a6c984237a00fab
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 21:53:10 2021 +0100
+
+    feat: Add view usecases
+
+commit df04a6d4aa617f417595552dc4c00755e5c5e954
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 21:39:59 2021 +0100
+
+    feat: Add more joins
+
+commit 6875ee42e5a5a15cfc4e9fc24168884bf2a73197
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 20:33:40 2021 +0100
+
+    refactor: Declare impedance mismatch more precisely
+
+commit aa42f829a8631412066982d7606cade59294c96c
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 19:50:37 2021 +0100
+
+    feat: Add Hell section
+
+commit 7ac907600c8009f17154f622a52067314769cf60
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 19:34:31 2021 +0100
+
+    feat: Add triggers
+
+commit a814ca4217550e2630143bada0a79e64c319657c
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 19:23:32 2021 +0100
+
+    feat: Add joins and unions
+
+commit 42609e577e74329471c654cb4f3d685136cde843
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 18:43:36 2021 +0100
+
+    docs: Prefer PDF over Mardown for downloads
+
+commit 959191bd48a7877e28b4565eac70368156059f28
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 18:41:52 2021 +0100
+
+    fix: master → main
+
+commit 3b326cbb64bf61e6dd44d5e0c67c101420899317
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 18:38:50 2021 +0100
+
+    feat: Add data types and CRUD, dockerize build
+
+commit 492b82b36caf7970fe111eb5196d51a14cd80469
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 18:18:37 2021 +0100
+
+    build: Setup CI/CD
+
+commit 17f5d448ed16499e4a2638f9510fe194da1848c7
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 22 18:10:37 2021 +0100
+
+    feat: Add additional notes and clarify their role
+
+commit 8c284c34a20df13aca25ed1066e85984f52d476c
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Sun Feb 21 17:05:34 2021 +0100
+
+    feat: Drop all DB objects from table in reset script
+
+commit f4dc7b693b657150cf80b0ec35c8217f22a85e5b
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Sun Feb 21 13:01:38 2021 +0100
+
+    feat: Add notes on indexes
+
+commit 47631451c40b2ad255e146aab16e7ea7f52bd9e8
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Feb 19 14:46:08 2021 +0000
+
+    feat: Extend reset script to include view removal
+
+commit dec88c3e4c2065d37786e1ef57f9ddabe58fd8fa
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Feb 19 14:41:31 2021 +0000
+
+    feat: Add recycle bin purge
+
+commit 59dc25c0822da105e4011eba4591cf305d9c8814
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Thu Feb 11 19:42:17 2021 +0000
+
+    refactor: Continue formatting
+
+commit 8bf5571dad28bd63a186d73da3693f2e68a67b11
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Sun Feb 7 15:09:14 2021 +0000
+
+    refactor: Start adding proper code tags
+
+commit 99105df62a249788033e94459fcf52f837f6d260
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Feb 5 17:28:42 2021 +0000
+
+    refactor: Add sections to SQL section
+
+commit cdebc0cada211e0e9c61dae3033c33de9a537117
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Feb 5 17:13:53 2021 +0000
+
+    feat: Add sections to PL/SQL section
+
+commit 9b953346a02ffa62c5bdbfda3a62770cee6bcaac
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Feb 5 17:06:56 2021 +0000
+
+    refactor: Use lists universally
+
+commit 6a3d8b90e4fe08b96b95018555d24e04837acb8f
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 1 22:56:12 2021 +0000
+
+    refactor: Start using lists instead of long text blocks
+
+commit ed5b81cc839db0c169e249659521a0d5cb8e2519
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Mon Feb 1 22:48:09 2021 +0000
+
+    refactor: Start refining layout
+
+commit cbb0c2b8dc58c3b1ec642f10d3e5aabdd995f146
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Sat Jan 30 20:57:21 2021 +0100
+
+    docs: Add license
+
+commit 719378ec190fba56b3866c7ef9feb4e7ddb7ca40
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Sat Jan 30 19:56:19 2021 +0000
+
+    refactor: Migrate rest of Vanilla SQL guide
+
+commit 50d21815d7f9dab7f000586f72d91bda4714bd75
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Sat Jan 30 19:51:39 2021 +0000
+
+    refactor: Migrate types
+
+commit 4f3b36b940b0f723dceb58ebdab96a0d69ce25a5
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Sat Jan 30 19:44:41 2021 +0000
+
+    feat: Start documenting constraints
+
+commit 1c8693dea3cee51c2b5d807595dff1ea532e5b39
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Sat Jan 30 19:36:27 2021 +0000
+
+    feat: Start documenting the dml
+
+commit 9339aa0106c839a5ae81024c2a8d7bec350aadd7
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Sat Jan 30 19:27:48 2021 +0000
+
+    refactor: Migrate join section
+
+commit ba9e1b2b7b7a61a65feb5e09a0ad65cf5cf452e7
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Sat Jan 30 19:18:28 2021 +0000
+
+    feat: Start reverse-engineering vanilla SQL docs
+
+commit 35ca4a9e30047bfb2c0b6fee0892c97a35a377fb
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Jan 29 15:13:27 2021 +0000
+
+    feat: Document varray
+
+commit 8c0efc8c40ca21a8fb68034aaac879073caa8b59
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Jan 29 15:06:22 2021 +0000
+
+    feat: Add array docs
+
+commit 89c5b34c21ad5d2da59fd76ab546dc099f0d06b8
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Jan 29 14:45:22 2021 +0000
+
+    feat: Start working on more complex triggers
+
+commit 7f09ae56d25105dd7de7450df7cb3b20269d2b2b
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Jan 29 14:29:30 2021 +0000
+
+    feat: Start adding trigger docs
+
+commit cf45fcb84eb27b396602a760ff1ba92a558aa8b1
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Jan 29 14:08:32 2021 +0000
+
+    feat: Add package call and implementation docs
+
+commit 74be33a8077138e5f90ae3e32251dfc710236d57
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Jan 29 09:59:37 2021 +0000
+
+    feat: Add package docs
+
+commit ad82878d08ea536fc3dff329444ad57ca884017e
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Jan 29 09:43:48 2021 +0000
+
+    feat: Add docs for function
+
+commit 70bdc074c9c294d9afda21c0b3864aa577460b6d
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Jan 29 09:28:07 2021 +0000
+
+    feat: Add docs on procedures
+
+commit 21af96f6368c445b0b5beffb1dd213d24bdb34a2
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Jan 29 09:06:18 2021 +0000
+
+    feat: Add docs for cursors
+
+commit bfcad3c7cd88adc01d3f020eeedcef94d9cfdca6
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Thu Jan 28 19:48:53 2021 +0000
+
+    feat: Add exception handling docs
+
+commit 72e6f348309f27fce30e2c12a644e97697a663a3
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Jan 27 23:25:42 2021 +0000
+
+    feat: Add docs for select into
+
+commit 778bd8fa02fc5f8836c7fa6eb04bc33ef605d99c
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Jan 27 23:16:30 2021 +0000
+
+    feat: Add loops docs
+
+commit f866440cce99afbc2bfd5fea748f108f659bad8a
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Jan 27 23:03:13 2021 +0000
+
+    feat: Add switch and label/goto docs
+
+commit 587362320852cc26a571839893b114ea18aa65eb
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Jan 27 22:47:59 2021 +0000
+
+    feat: Add docs on statements
+
+commit 07605969adfe2b6e9a435dbf626b04cac44810b7
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Jan 27 22:31:49 2021 +0000
+
+    feat: Add notes on constants
+
+commit 2fe932499576e3f596dd88d98797b75cd0280b09
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Jan 27 22:18:15 2021 +0000
+
+    feat: Add Vanilla PDF guide
+
+commit 2c069e29c77b5e9e40f17a44b71c810315ba5a09
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Wed Jan 27 22:07:56 2021 +0000
+
+    feat: Add PL/SQL docs until variables
