@@ -1,3 +1,9 @@
+commit 716a33e3b58fcb4275cffccea8b9ec628933ad1a
+Author: Felicitas Pojtinger <felicitas@pojtinger.com>
+Date:   Fri Jun 24 18:43:43 2022 +0200
+
+    chore: Drop old metadata
+
 commit 6d2029052c75d9b429757d7ba20fece2792186ac
 Author: Felicitas Pojtinger <felicitas@pojtinger.com>
 Date:   Fri Jun 24 18:35:59 2022 +0200
