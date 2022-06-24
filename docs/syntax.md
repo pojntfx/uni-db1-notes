@@ -1,9 +1,13 @@
-% DB1 Syntax Details
-% Felicitas Pojtinger
-% \today
-\tableofcontents
+---
+author: [Felicitas Pojtinger]
+date: "2022-02-01"
+subject: "Uni DB1 Syntax Details"
+keywords: [databases, oracle, hdm-stuttgart]
+subtitle: "Syntax details for the DB1 (databases) course at HdM Stuttgart"
+lang: "de"
+---
 
-# DB1 Syntax Details
+# Uni DB1 Syntax Details
 
 > "so basically i am monkey" - monke, _monkeeee_
 

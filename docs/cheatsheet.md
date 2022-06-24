@@ -1,10 +1,13 @@
-% DB1 Syntax-Cheatsheet
-% Felicitas Pojtinger
-% \today
-\setcounter{tocdepth}{5}
-\tableofcontents
+---
+author: [Felicitas Pojtinger]
+date: "2022-02-01"
+subject: "Uni DB1 Syntax Details"
+keywords: [databases, oracle, hdm-stuttgart]
+subtitle: "Syntax cheatsheet for the DB1 (databases) course at HdM Stuttgart"
+lang: "de"
+---
 
-# DB1 Syntax-Cheatsheet
+# Uni DB1 Syntax Cheatsheet
 
 > "Come, let us go down and confuse their language so they will not understand each other" - Genesis 11:7, _Die Bibel_
 

@@ -1,9 +1,13 @@
-% DB1 Auswendiglernen
-% Felicitas Pojtinger
-% \today
-\tableofcontents
+---
+author: [Felicitas Pojtinger]
+date: "2022-02-01"
+subject: "Uni DB1 Notes"
+keywords: [databases, oracle, hdm-stuttgart]
+subtitle: "Notes for the DB1 (databases) course at HdM Stuttgart"
+lang: "de"
+---
 
-# DB1 Auswendiglernen
+# Uni DB1 Notes
 
 > "The true courage is to admit that the light at the end of the tunnel is probably the headlight of another train approaching" - Slavoj Žižek, _The Courage of Hopelessness_
 
