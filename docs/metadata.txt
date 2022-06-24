@@ -1,6 +1,0 @@
-Uni DB1 Notes
-Personal notes for the DB1 course at HdM Stuttgart.
-© 2021 Felicitas Pojtinger under AGPL-3.0
-https://github.com/pojntfx/uni-db1-notes
-https://github.com/pojntfx/uni-db1-notes/releases/latest/download/all.zip
-📎 Happy persisting!
