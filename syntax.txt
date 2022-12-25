@@ -195,7 +195,7 @@ Aliases
 -   You can alias long column names with
     select mylongname as name from contacts or just
     select mylongname name from contacts. The as keyword is optional.
-    Full-text column names are supported by enclosing in "". as can also
+    Full-text column names are supported by enclosing in ““. as can also
     format strings:
     select first_name || ' ' || last_name as "Name" from employees;
     yields Alice, Bob and System.

@@ -24,7 +24,7 @@
       padding-top: 50px;
       padding-bottom: 50px;
       hyphens: auto;
-      word-wrap: break-word;
+      overflow-wrap: break-word;
       text-rendering: optimizeLegibility;
       font-kerning: normal;
     }
@@ -32,6 +32,9 @@
       body {
         font-size: 0.9em;
         padding: 1em;
+      }
+      h1 {
+        font-size: 1.8em;
       }
     }
     @media print {
@@ -95,6 +98,7 @@
     pre code {
       padding: 0;
       overflow: visible;
+      overflow-wrap: normal;
     }
     .sourceCode {
      background-color: transparent;
@@ -135,6 +139,12 @@
     }
     #TOC li {
       list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
     }
     #TOC a:not(:hover) {
       text-decoration: none;
@@ -183,7 +193,7 @@
     code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
     code span.at { color: #7d9029; } /* Attribute */
     code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { } /* BuiltIn */
+    code span.bu { color: #008000; } /* BuiltIn */
     code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
     code span.ch { color: #4070a0; } /* Char */
     code span.cn { color: #880000; } /* Constant */
@@ -196,7 +206,7 @@
     code span.ex { } /* Extension */
     code span.fl { color: #40a070; } /* Float */
     code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
     code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
     code span.kw { color: #007020; font-weight: bold; } /* Keyword */
     code span.op { color: #666666; } /* Operator */
@@ -209,14 +219,12 @@
     code span.vs { color: #4070a0; } /* VerbatimString */
     code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <header id="title-block-header">
 <h1 class="title">Uni DB1 Syntax Cheatsheet</h1>
-<p class="subtitle">Syntax cheatsheet for the DB1 (databases) course at HdM Stuttgart</p>
+<p class="subtitle">Syntax cheatsheet for the DB1 (databases) course at
+HdM Stuttgart</p>
 <p class="author">Felicitas Pojtinger</p>
 <p class="date">2022-02-01</p>
 </header>
@@ -224,34 +232,50 @@
 <ul>
 <li><a href="#data-definition-language"><span class="toc-section-number">1.1</span> Data Definition Language</a>
 <ul>
-<li><a href="#tabellen"><span class="toc-section-number">1.1.1</span> Tabellen</a></li>
-<li><a href="#spalten"><span class="toc-section-number">1.1.2</span> Spalten</a></li>
-<li><a href="#constraints"><span class="toc-section-number">1.1.3</span> Constraints</a></li>
-<li><a href="#views"><span class="toc-section-number">1.1.4</span> Views</a></li>
-<li><a href="#indizes"><span class="toc-section-number">1.1.5</span> Indizes</a></li>
-<li><a href="#trigger"><span class="toc-section-number">1.1.6</span> Trigger</a></li>
-<li><a href="#functions"><span class="toc-section-number">1.1.7</span> Functions</a></li>
-<li><a href="#procedure"><span class="toc-section-number">1.1.8</span> Procedure</a></li>
+<li><a href="#tabellen"><span class="toc-section-number">1.1.1</span>
+Tabellen</a></li>
+<li><a href="#spalten"><span class="toc-section-number">1.1.2</span>
+Spalten</a></li>
+<li><a href="#constraints"><span class="toc-section-number">1.1.3</span>
+Constraints</a></li>
+<li><a href="#views"><span class="toc-section-number">1.1.4</span>
+Views</a></li>
+<li><a href="#indizes"><span class="toc-section-number">1.1.5</span>
+Indizes</a></li>
+<li><a href="#trigger"><span class="toc-section-number">1.1.6</span>
+Trigger</a></li>
+<li><a href="#functions"><span class="toc-section-number">1.1.7</span>
+Functions</a></li>
+<li><a href="#procedure"><span class="toc-section-number">1.1.8</span>
+Procedure</a></li>
 </ul></li>
 <li><a href="#data-manipulation-language"><span class="toc-section-number">1.2</span> Data Manipulation Language</a>
 <ul>
-<li><a href="#datentypen"><span class="toc-section-number">1.2.1</span> Datentypen</a></li>
+<li><a href="#datentypen"><span class="toc-section-number">1.2.1</span>
+Datentypen</a></li>
 <li><a href="#zeilenoperationen"><span class="toc-section-number">1.2.2</span> Zeilenoperationen</a></li>
-<li><a href="#unions"><span class="toc-section-number">1.2.3</span> Unions</a></li>
-<li><a href="#joins"><span class="toc-section-number">1.2.4</span> Joins</a></li>
-<li><a href="#trigger-1"><span class="toc-section-number">1.2.5</span> Trigger</a></li>
+<li><a href="#unions"><span class="toc-section-number">1.2.3</span>
+Unions</a></li>
+<li><a href="#joins"><span class="toc-section-number">1.2.4</span>
+Joins</a></li>
+<li><a href="#trigger-1"><span class="toc-section-number">1.2.5</span>
+Trigger</a></li>
 <li><a href="#ort-der-verdammnis"><span class="toc-section-number">1.2.6</span> Ort der Verdammnis</a></li>
 </ul></li>
 </ul>
 </nav>
 <blockquote>
-<p>“Come, let us go down and confuse their language so they will not understand each other” - Genesis 11:7, <em>Die Bibel</em></p>
+<p>“Come, let us go down and confuse their language so they will not
+understand each other” - Genesis 11:7, <em>Die Bibel</em></p>
 </blockquote>
-<p>Mehr Details unter <a href="https://github.com/pojntfx/uni-db1-notes" class="uri">https://github.com/pojntfx/uni-db1-notes</a>. Dieses Dokument ist nur als Schnell-Übersicht gedacht.</p>
+<p>Mehr Details unter <a href="https://github.com/pojntfx/uni-db1-notes" class="uri">https://github.com/pojntfx/uni-db1-notes</a>. Dieses
+Dokument ist nur als Schnell-Übersicht gedacht.</p>
 <section id="data-definition-language" data-number="0.1">
-<h2 data-number="1.1"><span class="header-section-number">1.1</span> Data Definition Language</h2>
+<h2 data-number="1.1"><span class="header-section-number">1.1</span>
+Data Definition Language</h2>
 <section id="tabellen" data-number="0.1.1">
-<h3 data-number="1.1.1"><span class="header-section-number">1.1.1</span> Tabellen</h3>
+<h3 data-number="1.1.1"><span class="header-section-number">1.1.1</span>
+Tabellen</h3>
 <section id="tabelle-erstellen" data-number="0.1.1.1">
 <h4 data-number="1.1.1.1"><span class="header-section-number">1.1.1.1</span> Tabelle erstellen</h4>
 <div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">table</span> persons (</span>
@@ -270,7 +294,8 @@
 </section>
 </section>
 <section id="spalten" data-number="0.1.2">
-<h3 data-number="1.1.2"><span class="header-section-number">1.1.2</span> Spalten</h3>
+<h3 data-number="1.1.2"><span class="header-section-number">1.1.2</span>
+Spalten</h3>
 <section id="spalten-hinzufügen" data-number="0.1.2.1">
 <h4 data-number="1.1.2.1"><span class="header-section-number">1.1.2.1</span> Spalten hinzufügen</h4>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> persons <span class="kw">add</span> ( phone <span class="dt">varchar2</span>(<span class="dv">20</span>), email <span class="dt">varchar2</span>(<span class="dv">100</span>) )</span></code></pre></div>
@@ -285,7 +310,8 @@
 </section>
 </section>
 <section id="constraints" data-number="0.1.3">
-<h3 data-number="1.1.3"><span class="header-section-number">1.1.3</span> Constraints</h3>
+<h3 data-number="1.1.3"><span class="header-section-number">1.1.3</span>
+Constraints</h3>
 <section id="constraints-hinzufügen" data-number="0.1.3.1">
 <h4 data-number="1.1.3.1"><span class="header-section-number">1.1.3.1</span> Constraints hinzufügen</h4>
 <div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">alter</span> <span class="kw">table</span> purchase_orders <span class="kw">add</span> <span class="kw">constraint</span> purchase_orders_order_id_pk <span class="kw">primary</span> <span class="kw">key</span>(order_id);</span></code></pre></div>
@@ -296,7 +322,8 @@
 </section>
 </section>
 <section id="views" data-number="0.1.4">
-<h3 data-number="1.1.4"><span class="header-section-number">1.1.4</span> Views</h3>
+<h3 data-number="1.1.4"><span class="header-section-number">1.1.4</span>
+Views</h3>
 <section id="views-erstellen" data-number="0.1.4.1">
 <h4 data-number="1.1.4.1"><span class="header-section-number">1.1.4.1</span> Views erstellen</h4>
 <div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">view</span> employees_years_of_service</span>
@@ -311,7 +338,8 @@
 </section>
 </section>
 <section id="indizes" data-number="0.1.5">
-<h3 data-number="1.1.5"><span class="header-section-number">1.1.5</span> Indizes</h3>
+<h3 data-number="1.1.5"><span class="header-section-number">1.1.5</span>
+Indizes</h3>
 <section id="indizes-erstellen" data-number="0.1.5.1">
 <h4 data-number="1.1.5.1"><span class="header-section-number">1.1.5.1</span> Indizes erstellen</h4>
 <div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">index</span> members_full_name <span class="kw">on</span> members(first_name, last_name);</span></code></pre></div>
@@ -322,7 +350,8 @@
 </section>
 </section>
 <section id="trigger" data-number="0.1.6">
-<h3 data-number="1.1.6"><span class="header-section-number">1.1.6</span> Trigger</h3>
+<h3 data-number="1.1.6"><span class="header-section-number">1.1.6</span>
+Trigger</h3>
 <section id="trigger-erstellen" data-number="0.1.6.1">
 <h4 data-number="1.1.6.1"><span class="header-section-number">1.1.6.1</span> Trigger erstellen</h4>
 <div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">trigger</span> customers_credit_trigger</span>
@@ -363,7 +392,8 @@
 </section>
 </section>
 <section id="functions" data-number="0.1.7">
-<h3 data-number="1.1.7"><span class="header-section-number">1.1.7</span> Functions</h3>
+<h3 data-number="1.1.7"><span class="header-section-number">1.1.7</span>
+Functions</h3>
 <section id="function-erstellen" data-number="0.1.7.1">
 <h4 data-number="1.1.7.1"><span class="header-section-number">1.1.7.1</span> Function erstellen</h4>
 <div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">or</span> <span class="kw">replace</span> <span class="kw">function</span> get_my_sum( a <span class="dt">integer</span>, b <span class="dt">integer</span> ) <span class="kw">return</span> <span class="dt">integer</span></span>
@@ -383,7 +413,8 @@
 </section>
 </section>
 <section id="procedure" data-number="0.1.8">
-<h3 data-number="1.1.8"><span class="header-section-number">1.1.8</span> Procedure</h3>
+<h3 data-number="1.1.8"><span class="header-section-number">1.1.8</span>
+Procedure</h3>
 <section id="procedure-erstellen" data-number="0.1.8.1">
 <h4 data-number="1.1.8.1"><span class="header-section-number">1.1.8.1</span> Procedure erstellen</h4>
 <div class="sourceCode" id="cb19"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">create</span> <span class="kw">or</span> <span class="kw">replace</span> <span class="kw">procedure</span> get_sum ( a <span class="dt">integer</span>, b <span class="dt">integer</span> )</span>
@@ -407,9 +438,11 @@
 </section>
 </section>
 <section id="data-manipulation-language" data-number="0.2">
-<h2 data-number="1.2"><span class="header-section-number">1.2</span> Data Manipulation Language</h2>
+<h2 data-number="1.2"><span class="header-section-number">1.2</span>
+Data Manipulation Language</h2>
 <section id="datentypen" data-number="0.2.1">
-<h3 data-number="1.2.1"><span class="header-section-number">1.2.1</span> Datentypen</h3>
+<h3 data-number="1.2.1"><span class="header-section-number">1.2.1</span>
+Datentypen</h3>
 <ul>
 <li><p><code>CHAR|CHARACTER (size)</code></p></li>
 <li><p><code>VARCHAR2 (size)</code></p></li>
@@ -422,7 +455,8 @@
 </ul>
 </section>
 <section id="zeilenoperationen" data-number="0.2.2">
-<h3 data-number="1.2.2"><span class="header-section-number">1.2.2</span> Zeilenoperationen</h3>
+<h3 data-number="1.2.2"><span class="header-section-number">1.2.2</span>
+Zeilenoperationen</h3>
 <section id="insert" data-number="0.2.2.1">
 <h4 data-number="1.2.2.1"><span class="header-section-number">1.2.2.1</span> Insert</h4>
 <div class="sourceCode" id="cb22"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">insert</span> <span class="kw">into</span> discounts(</span>
@@ -450,7 +484,8 @@
 </section>
 </section>
 <section id="unions" data-number="0.2.3">
-<h3 data-number="1.2.3"><span class="header-section-number">1.2.3</span> Unions</h3>
+<h3 data-number="1.2.3"><span class="header-section-number">1.2.3</span>
+Unions</h3>
 <p>Gleiche Anzahl von Spalten, mehr Zeilen.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    first_name,</span>
@@ -466,7 +501,8 @@
 <span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span> employees <span class="kw">order</span> <span class="kw">by</span> <span class="kw">role</span></span></code></pre></div>
 </section>
 <section id="joins" data-number="0.2.4">
-<h3 data-number="1.2.4"><span class="header-section-number">1.2.4</span> Joins</h3>
+<h3 data-number="1.2.4"><span class="header-section-number">1.2.4</span>
+Joins</h3>
 <p>Mehr Spalten &amp; mehr Zeilen</p>
 <section id="inner-join" data-number="0.2.4.1">
 <h4 data-number="1.2.4.1"><span class="header-section-number">1.2.4.1</span> Inner Join</h4>
@@ -509,7 +545,8 @@
 </section>
 </section>
 <section id="trigger-1" data-number="0.2.5">
-<h3 data-number="1.2.5"><span class="header-section-number">1.2.5</span> Trigger</h3>
+<h3 data-number="1.2.5"><span class="header-section-number">1.2.5</span>
+Trigger</h3>
 <section id="insert-trigger" data-number="0.2.5.1">
 <h4 data-number="1.2.5.1"><span class="header-section-number">1.2.5.1</span> Insert-Trigger</h4>
 <p><code>:old</code> ist nicht vorhanden.</p>
@@ -604,14 +641,21 @@
 </section>
 </section>
 <section id="ort-der-verdammnis" data-number="0.2.6">
-<h3 data-number="1.2.6"><span class="header-section-number">1.2.6</span> Ort der Verdammnis</h3>
+<h3 data-number="1.2.6"><span class="header-section-number">1.2.6</span>
+Ort der Verdammnis</h3>
 <blockquote>
 <p><em>menhir</em></p>
 </blockquote>
-<p>Wenn einem der Syntax schon nicht kompliziert genug ist, dann darf man <em>vor</em> das <code>declare</code>-Statement eines Triggers auch noch folgendes sinnloses Konstrukt packen und statt <code>:new</code> <code>:neu</code> schreiben:</p>
+<p>Wenn einem der Syntax schon nicht kompliziert genug ist, dann darf
+man <em>vor</em> das <code>declare</code>-Statement eines Triggers auch
+noch folgendes sinnloses Konstrukt packen und statt <code>:new</code>
+<code>:neu</code> schreiben:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">referencing</span> <span class="kw">new</span> <span class="kw">as</span> neu <span class="kw">old</span> <span class="kw">as</span> alt</span></code></pre></div>
 <p>Danach hat man auch fünf Zeilen. Und fünf Hirnzellen weniger.</p>
-<p>Wo wir schon dabei sind: Ist der sonst universelle Negations-Operator <code>!=</code> zu einfach? Zu simpel und zu verständlich? Wie wäre es mit <code>&lt;&gt;</code>; macht das genau selbe, ist aber komplizierter™!</p>
+<p>Wo wir schon dabei sind: Ist der sonst universelle Negations-Operator
+<code>!=</code> zu einfach? Zu simpel und zu verständlich? Wie wäre es
+mit <code>&lt;&gt;</code>; macht das genau selbe, ist aber
+komplizierter™!</p>
 </section>
 </section>
 </body>
